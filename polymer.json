@@ -14,6 +14,8 @@
   ],
   "includeDependencies": [
     "manifest.json",
-    "bower_components/webcomponentsjs/webcomponents-lite.min.js"
+    "systemjs.config.js",
+    "bower_components/webcomponentsjs/webcomponents-lite.min.js",
+    "node_modules/systemjs/dist/system.js"
   ]
 }

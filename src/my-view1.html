@@ -29,9 +29,23 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </div>
   </template>
 
-  <script>
-    Polymer({
-      is: 'my-view1'
-    });
-  </script>
+  <script>System.import('scripts/my-view1.js');</script>
+
+  <!-- FIXME: Fix Gulpfile to allow inline TypeScript.
+       Including this breaks build stream because
+       the Gulpfile doesn't rename it back to the original
+       *.ts, so the Html rejoin can't find it and just
+       dumps the *.js file into the source directory instead
+       of reinserting it into the HTML file. -->
+
+  <!--<script type="text/x-typescript">-->
+  <!--(async() => {-->
+    <!--class Foo {-->
+      <!--async say(msg: string) {-->
+        <!--console.debug(msg);-->
+      <!--}-->
+    <!--}-->
+    <!--await new Foo().say('hello');-->
+  <!--})();-->
+  <!--</script>-->
 </dom-module>

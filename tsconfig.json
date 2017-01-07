@@ -1,0 +1,15 @@
+{
+  "files": [
+    "src/scripts/main.ts"
+  ],
+  "compilerOptions": {
+    "allowJs": true,
+    "module": "system",
+    "noImplicitAny": true,
+    "target": "es5"
+  },
+  "exclude": [
+    "bower_components",
+    "node_modules"
+  ]
+}

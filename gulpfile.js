@@ -51,6 +51,8 @@ const babel = require('gulp-babel');
 const uglify = require('gulp-uglify');
 const htmlmin = require('gulp-htmlmin');
 const cleanCSS = require('gulp-clean-css');
+const ts = require('gulp-typescript');
+const print = require('gulp-print');
 
 // The source task will split all of your source files into one
 // big ReadableStream. Source files are those in src/** as well as anything
@@ -59,17 +61,20 @@ const cleanCSS = require('gulp-clean-css');
 // will be split out into temporary files. You can use gulpif to filter files
 // out of the stream and run them through specific tasks.
 function source() {
+  const tsProject = ts.createProject('tsconfig.json');
+
   return project.splitSource()
     .pipe(gulpif('**/*.css', cleanCSS()))
     .pipe(gulpif('**/*.html', htmlmin({
       collapseWhitespace: true,
       removeComments: true,
-      minifyCSS: true,
-      uglifyJS: true
+      minifyCSS: true
     })))
-    .pipe(gulpif('**/*.js', babel()))
-    .pipe(gulpif('**/*.js', uglify()))
-    .pipe(project.rejoin()); // Call rejoin when you're finished
+
+    .pipe(gulpif('**/*.js', print((filepath) => `src: ${filepath}`)))
+    .pipe(gulpif(['**/*.js', '**/*.ts'], tsProject()))
+    .pipe(gulpif(['**/*.js', '!**/*.min.js'], uglify()))
+    .pipe(project.rejoin());
 }
 
 // The dependencies task will split all of your bower_components files into one
@@ -82,11 +87,11 @@ function dependencies() {
     .pipe(gulpif('**/*.html', htmlmin({
       collapseWhitespace: true,
       removeComments: true,
-      minifyCSS: true,
-      uglifyJS: true
+      minifyCSS: true
     })))
-    .pipe(gulpif('**/*.js', babel()))
-    .pipe(gulpif('**/*.js', uglify()))
+    .pipe(gulpif(['**/*.js', '!**/system*.js'], print((filepath) => `dep: ${filepath}`)))
+    .pipe(gulpif(['**/*.js', '!**/system*.js'], babel({presets: ['es2015']})))
+    .pipe(gulpif(['**/*.js', '!**/*.min.js'], uglify()))
     .pipe(project.rejoin());
 }
 
