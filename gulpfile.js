@@ -53,6 +53,9 @@ const htmlmin = require('gulp-htmlmin');
 const cleanCSS = require('gulp-clean-css');
 const ts = require('gulp-typescript');
 const print = require('gulp-print');
+const lazypipe = require('lazypipe');
+const extReplace = require('gulp-ext-replace');
+const replace = require('gulp-replace');
 
 // The source task will split all of your source files into one
 // big ReadableStream. Source files are those in src/** as well as anything
@@ -62,6 +65,20 @@ const print = require('gulp-print');
 // out of the stream and run them through specific tasks.
 function source() {
   const tsProject = ts.createProject('tsconfig.json');
+  const tsPipe = lazypipe()
+    .pipe(tsProject)
+    .pipe(uglify)
+    .pipe(() => gulpif((file) => {
+        // Since TypeScript transpiles *.ts into *.js, we need to rename it
+        // back to *.ts so that the rejoiner can find it to reinsert into the
+        // original HTML file.
+        //
+        // The temporary filenames from the HTML splitter follow this pattern:
+        // <orig_html_file_basename>.html_script_<index>.js
+        // e.g., my-view1.html_script_1.js
+        return /\.html_script/i.test(file.basename);
+      },
+      extReplace('.ts')));
 
   return project.splitSource()
     .pipe(gulpif('**/*.css', cleanCSS()))
@@ -71,8 +88,13 @@ function source() {
       minifyCSS: true
     })))
 
-    .pipe(gulpif('**/*.js', print((filepath) => `src: ${filepath}`)))
-    .pipe(gulpif(['**/*.js', '**/*.ts'], tsProject()))
+    // Replace <script type="text/x-typescript"> into <script>
+    // since the script body gets transpiled into JavaScript
+    .pipe(gulpif('**/*.html', replace(/(<script.*type=["'].*\/)x-typescript/, '$1javascript')))
+
+    .pipe(gulpif('**/*.{js,ts}', print((filepath) => `src: ${filepath}`)))
+    .pipe(gulpif('**/*.ts', tsPipe()))
+    .pipe(gulpif('**/*.js', babel({presets: ['es2015']})))
     .pipe(gulpif(['**/*.js', '!**/*.min.js'], uglify()))
     .pipe(project.rejoin());
 }

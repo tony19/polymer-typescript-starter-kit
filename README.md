@@ -12,17 +12,12 @@ Run these commands to install dependencies, build the project, start a local ser
 yarn
 bower
 npm run build
-npm run start
+npm start
 ```
 
 ### Known Issues
 
- * Live reload (and `polymer serve -o`) does not yet work. Build the output, and serve it with `polymer serve build/unbundled -o` (or `npm run start`).
-
-### Roadmap
-
- * Live reload (and `polymer serve -o`)
- * Inline typescript transpilation (i.e., in `<script type="text/x-typescript>`)
+ * Live reload (and `polymer serve -o`) does not yet work. Build the output, and serve it with `polymer serve build/unbundled -o` (or `npm start`).
 
 ### Setup
 
