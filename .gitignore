@@ -1,0 +1,7 @@
+.DS_Store
+.idea
+bower_components
+build
+dist
+node_modules
+npm_debug.log
