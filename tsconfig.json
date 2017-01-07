@@ -4,6 +4,7 @@
   ],
   "compilerOptions": {
     "allowJs": true,
+    "experimentalDecorators": true,
     "module": "system",
     "noImplicitAny": true,
     "target": "es5"

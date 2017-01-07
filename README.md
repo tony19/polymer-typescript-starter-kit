@@ -23,7 +23,6 @@ npm run start
 
  * Live reload (and `polymer serve -o`)
  * Inline typescript transpilation (i.e., in `<script type="text/x-typescript>`)
- * PolymerTS support
 
 ### Setup
 

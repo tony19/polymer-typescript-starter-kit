@@ -17,6 +17,7 @@
     "polymer": "Polymer/polymer#^1.6.0"
   },
   "devDependencies": {
-    "web-component-tester": "^4.0.0"
+    "web-component-tester": "^4.0.0",
+    "polymer-ts": "^0.1.28"
   }
 }
