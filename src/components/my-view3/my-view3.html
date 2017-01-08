@@ -29,5 +29,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </div>
   </template>
 
-  <script>System.import('components/my-view3/my-view3');</script>
+  <script type="text/x-typescript">
+    @component('my-view3')
+    class MyView3 extends polymer.Base {
+      @property()
+      title = 'View Three';
+    }
+    MyView3.register();
+  </script>
 </dom-module>
