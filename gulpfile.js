@@ -12,7 +12,8 @@
 
 const path = require('path');
 const gulp = require('gulp');
-const gulpif = require('gulp-if');
+const $ = require('gulp-load-plugins')();
+const lazypipe = require('lazypipe');
 
 // Got problems? Try logging 'em
 // const logging = require('plylog');
@@ -47,28 +48,19 @@ global.config = {
 // A task should return either a WriteableStream or a Promise
 const clean = require('./gulp-tasks/clean.js');
 const project = require('./gulp-tasks/project.js');
-const babel = require('gulp-babel');
-const uglify = require('gulp-uglify');
-const htmlmin = require('gulp-htmlmin');
-const cleanCSS = require('gulp-clean-css');
-const ts = require('gulp-typescript');
-const print = require('gulp-print');
-const lazypipe = require('lazypipe');
-const extReplace = require('gulp-ext-replace');
-const replace = require('gulp-replace');
 
 // The source task will split all of your source files into one
 // big ReadableStream. Source files are those in src/** as well as anything
 // added to the sourceGlobs property of polymer.json.
 // Because most HTML Imports contain inline CSS and JS, those inline resources
-// will be split out into temporary files. You can use gulpif to filter files
+// will be split out into temporary files. You can use $.if to filter files
 // out of the stream and run them through specific tasks.
 function source() {
-  const tsProject = ts.createProject('tsconfig.json');
+  const tsProject = $.typescript.createProject('tsconfig.json');
   const tsPipe = lazypipe()
     .pipe(tsProject)
-    .pipe(uglify)
-    .pipe(() => gulpif((file) => {
+    .pipe($.uglify)
+    .pipe(() => $.if((file) => {
         // Since TypeScript transpiles *.ts into *.js, we need to rename it
         // back to *.ts so that the rejoiner can find it to reinsert into the
         // original HTML file.
@@ -78,11 +70,11 @@ function source() {
         // e.g., my-view1.html_script_1.js
         return /\.html_script/i.test(file.basename);
       },
-      extReplace('.ts')));
+      $.extReplace('.ts')));
 
   return project.splitSource()
-    .pipe(gulpif('**/*.css', cleanCSS()))
-    .pipe(gulpif('**/*.html', htmlmin({
+    .pipe($.if('**/*.css', $.cleanCss()))
+    .pipe($.if('**/*.html', $.htmlmin({
       collapseWhitespace: true,
       removeComments: true,
       minifyCSS: true
@@ -90,12 +82,12 @@ function source() {
 
     // Replace <script type="text/x-typescript"> into <script>
     // since the script body gets transpiled into JavaScript
-    .pipe(gulpif('**/*.html', replace(/(<script.*type=["'].*\/)x-typescript/, '$1javascript')))
+    .pipe($.if('**/*.html', $.replace(/(<script.*type=["'].*\/)x-typescript/, '$1javascript')))
 
-    .pipe(gulpif('**/*.{js,ts}', print((filepath) => `src: ${filepath}`)))
-    .pipe(gulpif('**/*.ts', tsPipe()))
-    .pipe(gulpif('**/*.js', babel({presets: ['es2015']})))
-    .pipe(gulpif(['**/*.js', '!**/*.min.js'], uglify()))
+    .pipe($.if('**/*.{js,ts}', $.print((filepath) => `src: ${filepath}`)))
+    .pipe($.if('**/*.ts', tsPipe()))
+    .pipe($.if('**/*.js', $.babel({presets: ['es2015']})))
+    .pipe($.if(['**/*.js', '!**/*.min.js'], $.uglify()))
     .pipe(project.rejoin());
 }
 
@@ -105,15 +97,15 @@ function source() {
 // case you need it :)
 function dependencies() {
   return project.splitDependencies()
-    .pipe(gulpif('**/*.css', cleanCSS()))
-    .pipe(gulpif('**/*.html', htmlmin({
+    .pipe($.if('**/*.css', $.cleanCss()))
+    .pipe($.if('**/*.html', $.htmlmin({
       collapseWhitespace: true,
       removeComments: true,
       minifyCSS: true
     })))
-    .pipe(gulpif(['**/*.js', '!**/system*.js'], print((filepath) => `dep: ${filepath}`)))
-    .pipe(gulpif(['**/*.js', '!**/system*.js'], babel({presets: ['es2015']})))
-    .pipe(gulpif(['**/*.js', '!**/*.min.js'], uglify()))
+    .pipe($.if(['**/*.js', '!**/system*.js'], $.print((filepath) => `dep: ${filepath}`)))
+    .pipe($.if(['**/*.js', '!**/system*.js'], $.babel({presets: ['es2015']})))
+    .pipe($.if(['**/*.js', '!**/*.min.js'], $.uglify()))
     .pipe(project.rejoin());
 }
 
