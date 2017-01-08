@@ -24,4 +24,3 @@ class MyApp extends polymer.Base {
   }
 }
 MyApp.register();
-
