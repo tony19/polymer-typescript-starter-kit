@@ -27,6 +27,7 @@ global.config = {
     rootDirectory: 'build',
     bundledDirectory: 'bundled',
     unbundledDirectory: 'unbundled',
+    debugDirectory: 'debug',
     // Accepts either 'bundled', 'unbundled', or 'both'
     // A bundled version will be vulcanized and sharded. An unbundled version
     // will not have its files combined (this is for projects using HTTP/2
@@ -117,3 +118,11 @@ gulp.task('sw', project.serviceWorker);
 // and process them, and output bundled and unbundled versions of the project
 // with their own service workers
 gulp.task('default', gulp.series('build', 'sw'));
+
+// Load custom Gulp tasks
+const fs = require('fs');
+fs.readdirSync('gulp-tasks').forEach(file => {
+  if (file.endsWith('.js')) {
+    require(`./gulp-tasks/${file}`);
+  }
+});

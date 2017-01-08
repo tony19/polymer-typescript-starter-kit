@@ -31,6 +31,8 @@
     "gulp-load-plugins": "^1.4.0",
     "gulp-print": "^2.0.1",
     "gulp-replace": "^0.5.4",
+    "gulp-sourcemaps": "^2.2.2",
+    "gulp-tslint": "^7.0.1",
     "gulp-typescript": "^3.1.3",
     "gulp-uglify": "^2.0.0",
     "gulp-util": "^3.0.8",
@@ -39,6 +41,7 @@
     "plylog": "^0.4.0",
     "polymer-build": "^0.6.0",
     "polymer-cli": "^0.17.0",
+    "tslint": "^4.3.1",
     "typescript": "^2.1.4"
   },
   "dependencies": {

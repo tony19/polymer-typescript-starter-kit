@@ -1,0 +1,14 @@
+{
+  "extends": "tslint:latest",
+  "rules": {
+    "member-access": false,
+    "no-console": false,
+    "no-reference": false,
+    "object-literal-sort-keys": false,
+    "ordered-imports": false,
+    "quotemark": false,
+    "variable-name": {
+      "check-format": "allow-leading-underscore"
+    }
+  }
+}
