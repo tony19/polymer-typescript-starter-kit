@@ -42,7 +42,6 @@
   },
   "dependencies": {
     "@types/es6-shim": "^0.31.32",
-    "gulp": "github:gulpjs/gulp#4.0",
     "systemjs": "^0.19.41"
   }
 }
