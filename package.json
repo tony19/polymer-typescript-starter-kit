@@ -21,6 +21,8 @@
     "@types/polymer-ts": "^0.1.28",
     "babel-plugin-array-includes": "^2.0.3",
     "babel-preset-es2015": "^6.18.0",
+    "browser-sync": "^2.18.6",
+    "connect-history-api-fallback": "^1.3.0",
     "del": "^2.2.1",
     "gulp": "gulpjs/gulp#4.0",
     "gulp-babel": "^6.1.2",
@@ -36,13 +38,15 @@
     "gulp-typescript": "^3.1.3",
     "gulp-uglify": "^2.0.0",
     "gulp-util": "^3.0.8",
+    "gulp-watch": "^4.3.11",
     "lazypipe": "^1.0.1",
     "merge-stream": "^1.0.1",
     "plylog": "^0.4.0",
     "polymer-build": "^0.6.0",
     "polymer-cli": "^0.17.0",
     "tslint": "^4.3.1",
-    "typescript": "^2.1.4"
+    "typescript": "^2.1.4",
+    "yargs": "^6.6.0"
   },
   "dependencies": {
     "@types/es6-shim": "^0.31.32",
