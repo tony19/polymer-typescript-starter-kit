@@ -8,7 +8,7 @@
     "src/components/my-view404/my-view404.html"
   ],
   "sources": [
-    "src/**/*",
+    "src/components/**/*.html",
     "images/**/*",
     "bower.json"
   ],
