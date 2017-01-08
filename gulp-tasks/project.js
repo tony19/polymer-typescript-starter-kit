@@ -47,15 +47,14 @@ function rejoin() {
   return project.rejoinHtml();
 }
 
-// Returns a function which accepts refernces to functions that generate
+// Returns a function which accepts references to functions that generate
 // ReadableStreams. These ReadableStreams will then be merged, and used to
 // generate the bundled and unbundled versions of the site.
 // Takes an argument for the user to specify the kind of output they want
 // either bundled or unbundled. If this argument is omitted it will output both
 function merge(source, dependencies) {
   return function output() {
-    const mergedFiles = mergeStream(source(), dependencies())
-      .pipe(project.analyzer);
+    const mergedFiles = mergeStream(source(), dependencies());
     const bundleType = global.config.build.bundleType;
     let outputs = [];
 

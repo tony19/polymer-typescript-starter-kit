@@ -34,9 +34,9 @@
     "gulp-uglify": "^2.0.0",
     "gulp-util": "^3.0.8",
     "lazypipe": "^1.0.1",
-    "merge-stream": "^1.0.0",
+    "merge-stream": "^1.0.1",
     "plylog": "^0.4.0",
-    "polymer-build": "^0.4.1",
+    "polymer-build": "^0.6.0",
     "polymer-cli": "^0.17.0",
     "typescript": "^2.1.4"
   },
