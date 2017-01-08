@@ -117,7 +117,7 @@ function dependencies() {
     .pipe(project.rejoin());
 }
 
-gulp.task('clean', clean.build);
+gulp.task('clean', clean);
 gulp.task('build', gulp.series('clean', project.merge(source, dependencies)));
 gulp.task('sw', project.serviceWorker);
 

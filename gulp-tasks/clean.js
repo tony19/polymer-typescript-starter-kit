@@ -17,6 +17,4 @@ function clean() {
   return del(global.config.build.rootDirectory);
 }
 
-module.exports = {
-  build: clean
-};
+module.exports = clean;
