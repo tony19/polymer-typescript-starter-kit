@@ -18,6 +18,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <script src="../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
     <script src="../bower_components/web-component-tester/browser.js"></script>
+    <script src="../node_modules/systemjs/dist/system.js"></script>
+    <script src="./systemjs-test.config.js"></script>
+    <link rel="import" href="../bower_components/polymer-ts/polymer-ts.min.html">
 
     <!-- Import the element to test -->
     <link rel="import" href="../src/components/my-view1/my-view1.html">
@@ -30,16 +33,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </test-fixture>
 
     <script>
-      suite('my-view1 tests', function() {
-        var home;
+      HTMLImports.whenReady(async() => {
+        describe('my-view1 tests', () => {
+          let home;
 
-        setup(function() {
-          home = fixture('basic');
-        });
+          beforeEach(() => {
+            home = fixture('basic');
+          });
 
-        test('Number in circle should be 1', function() {
-          var circle = Polymer.dom(home.root).querySelector('.circle');
-          assert.equal(circle.textContent, '1');
+          it('Number in circle should be 1', () => {
+            const circle = Polymer.dom(home.root).querySelector('.circle');
+            expect(circle.textContent).to.be.equal('1');
+          });
         });
       });
     </script>
