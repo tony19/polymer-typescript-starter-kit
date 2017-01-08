@@ -117,11 +117,11 @@ function dependencies() {
     .pipe(project.rejoin());
 }
 
+gulp.task('clean', clean.build);
+gulp.task('build', gulp.series('clean', project.merge(source, dependencies)));
+gulp.task('sw', project.serviceWorker);
+
 // Clean the build directory, split all source and dependency files into streams
 // and process them, and output bundled and unbundled versions of the project
 // with their own service workers
-gulp.task('default', gulp.series([
-  clean.build,
-  project.merge(source, dependencies),
-  project.serviceWorker
-]));
+gulp.task('default', gulp.series('build', 'sw'));
