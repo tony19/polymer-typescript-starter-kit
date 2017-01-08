@@ -8,9 +8,9 @@
     "src/components/my-view404/my-view404.html"
   ],
   "sources": [
-   "src/**/*",
-   "images/**/*",
-   "bower.json"
+    "src/**/*",
+    "images/**/*",
+    "bower.json"
   ],
   "extraDependencies": [
     "manifest.json",
