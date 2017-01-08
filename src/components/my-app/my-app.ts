@@ -6,6 +6,10 @@ class MyApp extends polymer.Base {
   @observe('routeData.page')
   _routePageChanged(page: string) {
     this.page = page || 'view1';
+
+    if (!this.$.drawer.persistent) {
+      this.$.drawer.close();
+    }
   }
 
   @observe('page')
