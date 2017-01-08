@@ -11,13 +11,13 @@ Run these commands to install dependencies, build the project, start a local ser
 ```shell
 yarn
 bower
-npm run build
-npm start
+yarn build
+yarn start
 ```
 
 ### Known Issues
 
- * Live reload (and `polymer serve -o`) does not yet work. Build the output, and serve it with `polymer serve build/unbundled -o` (or `npm start`).
+ * Live reload (and `polymer serve -o`) does not yet work. Build the output, and serve it with `polymer serve build/unbundled -o` (or `yarn start`).
 
 ### Setup
 
@@ -47,7 +47,7 @@ In addition the command also creates a fallback `build/bundled` folder,
 generated using fragment bundling, suitable for serving from non
 H2/push-compatible servers or to clients that do not support H2/Push.
 
-    npm run build
+    yarn build
 
 ### Preview the build
 
