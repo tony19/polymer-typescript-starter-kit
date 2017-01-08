@@ -7,11 +7,33 @@
 This template is a starting point for building Polymer apps (based on [Polymer Starter Kit 2.1.1](https://github.com/PolymerElements/polymer-starter-kit/releases/tag/v2.1.1))
 using TypeScript.
 
-#### Features:
+With inline TypeScript transpilation (via `<script type="text/x-typescript>`) and [PolymerTS](https://github.com/nippur72/PolymerTS), you could define elements like this:
 
- * Inline TypeScript transpilation (via `<script type="text/x-typescript>`)
- * PolymerTS
- * ...
+    <dom-module id="my-view3">
+      <template>
+        <h1>[[title]]</h1>
+      </template>
+
+      <script type="text/x-typescript">
+        @component('my-view3')
+        class MyView3 extends polymer.Base {
+          @property()
+          title = 'View Three';
+        }
+        MyView3.register();
+      </script>
+    </dom-module>
+
+You could also import TypeScript files like this:
+
+    <dom-module id="my-view2">
+      <template>
+        <h1>[[title]]</h1>
+      </template>
+
+      <script>System.import('components/my-view2/my-view2');</script>
+    </dom-module>
+
 
 ### Quickstart
 
