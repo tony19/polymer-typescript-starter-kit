@@ -3,12 +3,23 @@ import loadPlugins from 'gulp-load-plugins';
 
 const $ = loadPlugins();
 
+function htmllintReporter(filepath, issues) {
+  if (issues.length > 0) {
+    for (const issue of issues) {
+      $.util.log(
+        $.util.colors.cyan('[gulp-htmllint] ') +
+        $.util.colors.white(`${filepath} [${issue.line},${issue.column}]: `) +
+        $.util.colors.red(`(${issue.code}) ${issue.msg}`)
+      );
+    }
+
+    process.exitCode = 1;
+  }
+}
+
 function htmllint() {
   return gulp.src('src/**/*.html')
-    .pipe($.debug({title: 'htmllint'}))
-    .pipe($.htmlLint())
-    .pipe($.htmlLint.format())
-    .pipe($.htmlLint.failOnError());
+    .pipe($.htmllint({}, htmllintReporter));
 }
 
 gulp.task('htmllint', htmllint);

@@ -6,5 +6,7 @@
   "indent-width": false,
   "id-class-style": false,
   "line-end-style": false,
-  "tag-bans": []
+  "tag-bans": [],
+  "tag-name-match": true,
+  "tag-close": false
 }
