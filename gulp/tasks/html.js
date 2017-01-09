@@ -35,6 +35,7 @@ function source() {
       $.extReplace('.ts')));
 
   return project.splitSource()
+    .pipe($.debug({title: 'html:src'}))
     .pipe($.if('**/*.css', $.cleanCss()))
     .pipe($.if('**/*.html', $.htmlmin({
       collapseWhitespace: true,
@@ -46,7 +47,6 @@ function source() {
     // since the script body gets transpiled into JavaScript
     .pipe($.if('**/*.html', $.replace(/(<script.*type=["'].*\/)x-typescript/, '$1javascript')))
 
-    .pipe($.if('**/*.{js,ts}', $.debug({title: 'html:src'})))
     .pipe($.if('**/*.ts', tsPipe()))
     .pipe($.if('**/*.js', $.babel({presets: ['es2015']})))
     .pipe($.if(['**/*.js', '!**/*.min.js'], $.uglify()))
@@ -59,13 +59,13 @@ function source() {
 // case you need it :)
 function dependencies() {
   return project.splitDependencies()
+    .pipe($.debug({title: 'html:dep'}))
     .pipe($.if('**/*.css', $.cleanCss()))
     .pipe($.if('**/*.html', $.htmlmin({
       collapseWhitespace: true,
       removeComments: true,
       minifyCSS: true
     })))
-    .pipe($.if(['**/*.js', '!**/system*.js'], $.debug({title: 'html:dep'})))
     .pipe($.if(['**/*.js', '!**/system*.js'], $.babel({presets: ['es2015']})))
     .pipe($.if(['**/*.js', '!**/*.min.js'], $.uglify()))
     .pipe(project.rejoin());
