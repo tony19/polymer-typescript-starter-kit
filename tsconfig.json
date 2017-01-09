@@ -4,6 +4,9 @@
     "experimentalDecorators": true,
     "module": "system",
     "noImplicitAny": true,
+    "noImplicitThis": true,
+    "removeComments": true,
+    "strictNullChecks": true,
     "target": "es5"
   },
   "exclude": [
