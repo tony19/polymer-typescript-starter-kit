@@ -5,9 +5,13 @@
 > Polymer Starter Kit w/TypeScript support
 
 This template is a starting point for building Polymer apps (based on [Polymer Starter Kit 2.1.1](https://github.com/PolymerElements/polymer-starter-kit/releases/tag/v2.1.1))
-using TypeScript.
+using TypeScript, featuring:
 
-With inline TypeScript transpilation (via `<script type="text/x-typescript>`) and [PolymerTS](https://github.com/nippur72/PolymerTS), you could define elements like this:
+ * Inline TypeScript transpilation (via `<script type="text/x-typescript>`)
+ * [PolymerTS](https://github.com/nippur72/PolymerTS)
+ * Live reload on development server
+
+With inline TypeScript transpilation and PolymerTS, you could define elements like this:
 
     <dom-module id="my-view3">
       <template>
@@ -49,13 +53,9 @@ Then run these commands to build the project and open a browser to it:
 ```shell
 yarn
 bower install
-yarn build
 yarn start
 ```
 
-### Known Issues
-
- * `polymer serve -o` doesn't yet work. For now, serve the project with `yarn start`.
 
 ### Useful Gulp tasks
 
@@ -65,6 +65,11 @@ Usage
 
 Available tasks
   clean         Cleans output directory
-  build         Builds the project (dest: build/[un]bundled)
-  sw            Generates a service worker for build output
+  build         Clean builds project (dest: build/[un]bundled)
+  html          Builds HTML files and dependencies
+  htmllint      Lints HTML files
+  scripts       Builds TypeScript files
+  serve         Starts development server (use `--port` to change port)
+  sw            Generates service worker for build output
+  tslint        Lints TypeScript files
 ```
