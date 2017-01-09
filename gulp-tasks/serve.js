@@ -4,6 +4,7 @@ const historyApiFallback = require('connect-history-api-fallback');
 const browserSync = require('browser-sync');
 const dest = require('./dest.js');
 const args = require('yargs').argv;
+require('./htmllint');
 require('./scripts');
 
 function serve() {
@@ -36,11 +37,8 @@ function serve() {
     browserSync.reload();
   };
 
-  // gulp.watch(['src/**/*.html'], gulp.series('htmllint', reload));
-  // gulp.watch(['src/styles/**/*.{scss,css}'], gulp.series('styles', reload));
-  // gulp.watch(['src/components/**/*.{scss,css}'], gulp.series('elements', reload));
-  $.watch(`src/**/*.{js,ts}`, {verbose: true}, gulp.series('scripts', reload));
-  // gulp.watch('src/images/**/*', reload);
+  $.watch('src/**/*.html', {verbose: true}, gulp.series('htmllint', reload));
+  $.watch('src/**/*.{js,ts}', {verbose: true}, gulp.series('scripts', reload));
 }
 
 gulp.task('serve', gulp.series('scripts', serve));
