@@ -10,6 +10,7 @@
 
 'use strict';
 
+const gulp = require('gulp');
 const del = require('del');
 
 // Returns a Promise to delete a directory
@@ -17,4 +18,5 @@ function clean() {
   return del(global.config.build.rootDirectory);
 }
 
+gulp.task('clean', clean);
 module.exports = clean;

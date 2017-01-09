@@ -47,7 +47,6 @@ global.config = {
 // Add your own custom gulp tasks to the gulp-tasks directory
 // A few sample tasks are provided for you
 // A task should return either a WriteableStream or a Promise
-const clean = require('./gulp-tasks/clean.js');
 const project = require('./gulp-tasks/project.js');
 
 // The source task will split all of your source files into one
@@ -110,7 +109,6 @@ function dependencies() {
     .pipe(project.rejoin());
 }
 
-gulp.task('clean', clean);
 gulp.task('build', gulp.series('clean', project.merge(source, dependencies)));
 gulp.task('sw', project.serviceWorker);
 
