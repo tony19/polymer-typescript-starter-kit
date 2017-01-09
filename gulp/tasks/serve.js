@@ -2,7 +2,7 @@ const $ = require('gulp-load-plugins')();
 const gulp = require('gulp');
 const historyApiFallback = require('connect-history-api-fallback');
 const browserSync = require('browser-sync');
-const dest = require('./dest.js');
+const dest = require('../dest');
 const args = require('yargs').argv;
 require('./htmllint');
 require('./scripts');

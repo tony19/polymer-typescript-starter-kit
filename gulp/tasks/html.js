@@ -1,6 +1,6 @@
 const $ = require('gulp-load-plugins')();
 const gulp = require('gulp');
-const project = require('./project');
+const project = require('../project');
 const lazypipe = require('lazypipe');
 require('./htmllint');
 

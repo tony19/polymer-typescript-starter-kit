@@ -11,15 +11,11 @@
 'use strict';
 
 const gulp = require('gulp');
-require('./gulp-tasks/config.js');
+require('./gulp/config.js');
 
 // Load custom Gulp tasks
 const fs = require('fs');
-fs.readdirSync('gulp-tasks').forEach(file => {
-  if (file.endsWith('.js')) {
-    require(`./gulp-tasks/${file}`);
-  }
-});
+fs.readdirSync('gulp/tasks').forEach(file => require(`./gulp/tasks/${file}`));
 
 gulp.task('build', gulp.series('clean', gulp.parallel('scripts', 'html')));
 gulp.task('default', gulp.series('build', 'sw'));

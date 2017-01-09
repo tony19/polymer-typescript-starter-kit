@@ -1,7 +1,7 @@
 const $ = require('gulp-load-plugins')();
 const gulp = require('gulp');
 const path = require('path');
-const dest = require('./dest.js');
+const dest = require('../dest');
 require('./tslint');
 
 function scripts() {
