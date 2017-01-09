@@ -77,7 +77,7 @@ class HtmlTask {
         removeComments: true,
         minifyCSS: true
       })))
-      .pipe($.if(['**/*.js', '!**/system*.js'], $.babel({presets: ['es2015']})))
+      .pipe($.if(['**/*.js', '!**/dist/system*.js'], $.babel({presets: ['es2015']})))
       .pipe($.if(['**/*.js', '!**/*.min.js'], $.uglify()))
       .pipe(this.project.rejoin());
   }

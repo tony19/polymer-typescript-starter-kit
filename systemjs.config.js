@@ -1,12 +1,12 @@
-(function(global) {
+(global => {
   // Map any paths encountered in `import` statements
-  var map = {
+  const map = {
     'scripts':                        '/src/scripts',
     'bower_components':               '/bower_components',
     'components':                     '/src/components'
   };
 
-  var config = {
+  const config = {
     baseUrl: '/',
     defaultJSExtensions: true,
     map: map
