@@ -13,10 +13,6 @@
 const gulp = require('gulp');
 require('./gulp-tasks/config.js');
 
-// Got problems? Try logging 'em
-// const logging = require('plylog');
-// logging.setVerbose();
-
 // Load custom Gulp tasks
 const fs = require('fs');
 fs.readdirSync('gulp-tasks').forEach(file => {
@@ -26,8 +22,4 @@ fs.readdirSync('gulp-tasks').forEach(file => {
 });
 
 gulp.task('build', gulp.series('clean', gulp.parallel('scripts', 'html')));
-
-// Clean the build directory, split all source and dependency files into streams
-// and process them, and output bundled and unbundled versions of the project
-// with their own service workers
 gulp.task('default', gulp.series('build', 'sw'));
