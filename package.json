@@ -16,7 +16,7 @@
   "scripts": {
     "build": "gulp",
     "start": "gulp serve",
-    "test": "polymer test"
+    "test": "gulp build && polymer test"
   },
   "devDependencies": {
     "@types/polymer-ts": "^0.1.28",
