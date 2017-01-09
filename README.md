@@ -11,7 +11,7 @@ using TypeScript, featuring:
  * [PolymerTS](https://github.com/nippur72/PolymerTS)
  * Live reload on development server
 
-With inline TypeScript transpilation and PolymerTS, you could define elements like this:
+With inline TypeScript transpilation and PolymerTS, you could define elements like [this](src/components/my-view3/my-view3.html):
 
 ```html
 <dom-module id="my-view3">
@@ -30,7 +30,7 @@ With inline TypeScript transpilation and PolymerTS, you could define elements li
 </dom-module>
 ```
 
-You could also import TypeScript files like this:
+You could also import TypeScript files like [this](src/components/my-view2/my-view2.html):
 
 ```html
 <dom-module id="my-view2">
