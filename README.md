@@ -13,30 +13,34 @@ using TypeScript, featuring:
 
 With inline TypeScript transpilation and PolymerTS, you could define elements like this:
 
-    <dom-module id="my-view3">
-      <template>
-        <h1>[[title]]</h1>
-      </template>
+```html
+<dom-module id="my-view3">
+  <template>
+    <h1>[[title]]</h1>
+  </template>
 
-      <script type="text/x-typescript">
-        @component('my-view3')
-        class MyView3 extends polymer.Base {
-          @property()
-          title = 'View Three';
-        }
-        MyView3.register();
-      </script>
-    </dom-module>
+  <script type="text/x-typescript">
+    @component('my-view3')
+    class MyView3 extends polymer.Base {
+      @property()
+      title = 'View Three';
+    }
+    MyView3.register();
+  </script>
+</dom-module>
+```
 
 You could also import TypeScript files like this:
 
-    <dom-module id="my-view2">
-      <template>
-        <h1>[[title]]</h1>
-      </template>
+```html
+<dom-module id="my-view2">
+  <template>
+    <h1>[[title]]</h1>
+  </template>
 
-      <script>System.import('components/my-view2/my-view2');</script>
-    </dom-module>
+  <script>System.import('components/my-view2/my-view2');</script>
+</dom-module>
+```
 
 
 ### Quickstart
