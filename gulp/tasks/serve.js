@@ -43,4 +43,4 @@ function serve() {
   $.watch('src/**/*.{js,ts}', {verbose: true}, gulp.series('scripts', reload));
 }
 
-gulp.task('serve', gulp.series(gulp.parallel('scripts', 'html'), serve));
+gulp.task('serve', serve);

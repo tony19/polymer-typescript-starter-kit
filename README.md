@@ -57,6 +57,7 @@ Then run these commands to build the project and open a browser to it:
 ```shell
 yarn
 bower install
+yarn build
 yarn start
 ```
 
