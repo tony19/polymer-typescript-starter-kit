@@ -1,10 +1,15 @@
 const $ = require('gulp-load-plugins')();
 const gulp = require('gulp');
-const project = require('../project');
+const Project = require('../project');
 const lazypipe = require('lazypipe');
 require('./htmllint');
 
-const html = project.merge(source, dependencies);
+let project;
+
+function html() {
+  project = new Project.PolymerProjectHelper();
+  return project.merge(source, dependencies).call(project);
+}
 
 // The source task will split all of your source files into one
 // big ReadableStream. Source files are those in src/** as well as anything
@@ -67,4 +72,7 @@ function dependencies() {
 }
 
 gulp.task('html', gulp.series('htmllint', html));
-module.exports = html;
+module.exports = {
+  html,
+  project
+};

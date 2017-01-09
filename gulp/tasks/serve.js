@@ -37,7 +37,7 @@ function serve() {
     browserSync.reload();
   };
 
-  $.watch('src/**/*.html', {verbose: true}, gulp.series('htmllint', reload));
+  $.watch('src/**/*.html', {verbose: true}, gulp.series('html', reload));
   $.watch('src/**/*.{js,ts}', {verbose: true}, gulp.series('scripts', reload));
 }
 
