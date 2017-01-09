@@ -4,6 +4,7 @@ const historyApiFallback = require('connect-history-api-fallback');
 const browserSync = require('browser-sync');
 const dest = require('../dest');
 const args = require('yargs').argv;
+require('./html');
 require('./htmllint');
 require('./scripts');
 
@@ -22,7 +23,6 @@ function serve() {
         }
       }
     },
-    // Run as an https by uncommenting 'https: true'
     // Note: this uses an unsigned certificate which on first access
     //       will present a certificate warning in the browser.
     https: args.https,
@@ -41,5 +41,5 @@ function serve() {
   $.watch('src/**/*.{js,ts}', {verbose: true}, gulp.series('scripts', reload));
 }
 
-gulp.task('serve', gulp.series('scripts', serve));
+gulp.task('serve', gulp.series(gulp.parallel('scripts', 'html'), serve));
 module.exports = serve;
