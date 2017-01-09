@@ -7,11 +7,12 @@
  * Code distributed by Google as part of the polymer project is also
  * subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
  */
+import * as config from '../config';
 import del from 'del';
 import gulp from 'gulp';
 
 function clean() {
-  return del(global.config.build.rootDirectory);
+  return del(config.build.rootDirectory);
 }
 
 gulp.task('clean', clean);

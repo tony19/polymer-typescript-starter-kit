@@ -1,6 +1,6 @@
 import * as path from 'path';
 
-global.config = {
+const config = {
   polymerJsonPath: path.join(process.cwd(), 'polymer.json'),
   build: {
     rootDirectory: 'build',
@@ -22,3 +22,38 @@ global.config = {
     navigateFallback: '/index.html'
   }
 };
+
+/**
+ * Gets the bundled-build dir only if config.bundleType is either
+ * 'both' or 'bundled'.
+ * @returns path to bundled-build directory
+ */
+config.getBundledDir = () => {
+  return ['both', 'bundled'].includes(config.build.bundleType) &&
+    path.join(
+      config.build.rootDirectory,
+      config.build.bundledDirectory
+    );
+};
+
+/**
+ * Gets the unbundled-build dir only if config.bundleType is either
+ * 'both' or 'unbundled'.
+ * @returns path to unbundled-build directory
+ */
+config.getUnbundledDir = () => {
+  return ['both', 'unbundled'].includes(config.build.bundleType) &&
+    path.join(
+      config.build.rootDirectory,
+      config.build.unbundledDirectory
+    );
+};
+
+config.getDebugDir = () => {
+  return path.join(
+    config.build.rootDirectory,
+    config.build.debugDirectory
+  );
+};
+
+module.exports = config;

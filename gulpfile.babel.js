@@ -8,7 +8,6 @@
  * subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
  */
 import gulp from 'gulp';
-require('./gulp/config.js');
 
 // Load custom Gulp tasks
 const fs = require('fs');

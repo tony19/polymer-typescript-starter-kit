@@ -10,7 +10,7 @@
 import gulp from 'gulp';
 import mergeStream from 'merge-stream';
 import * as polymer from 'polymer-build';
-import dest from './dest';
+import config from './config';
 
 /**
  * This is the heart of polymer-build and exposes much of the
@@ -21,7 +21,7 @@ import dest from './dest';
 export class PolymerProjectHelper {
 
   constructor() {
-    const polymerJSON = require(global.config.polymerJsonPath);
+    const polymerJSON = require(config.polymerJsonPath);
     this.project = new polymer.PolymerProject(polymerJSON);
   }
 
@@ -65,7 +65,7 @@ export class PolymerProjectHelper {
   merge(source, dependencies) {
     return function output() {
       const mergedFiles = mergeStream(source(), dependencies());
-      const bundleType = global.config.build.bundleType;
+      const bundleType = config.build.bundleType;
       let outputs = [];
 
       if (bundleType === 'both' || bundleType === 'bundled') {
@@ -88,7 +88,7 @@ export class PolymerProjectHelper {
   writeBundledOutput(stream) {
     return new Promise(resolve => {
       stream.pipe(this.project.bundler)
-        .pipe(gulp.dest(dest.bundledDir))
+        .pipe(gulp.dest(config.getBundledDir()))
         .on('end', resolve);
     });
   }
@@ -101,7 +101,7 @@ export class PolymerProjectHelper {
    */
   writeUnbundledOutput(stream) {
     return new Promise(resolve => {
-      stream.pipe(gulp.dest(dest.unbundledDir))
+      stream.pipe(gulp.dest(config.getUnbundledDir()))
         .on('end', resolve);
     });
   }
@@ -115,7 +115,7 @@ export class PolymerProjectHelper {
    * @returns Promise
    */
   serviceWorker() {
-    const bundleType = global.config.build.bundleType;
+    const bundleType = config.build.bundleType;
     let workers = [];
 
     if (bundleType === 'both' || bundleType === 'bundled') {
@@ -134,9 +134,9 @@ export class PolymerProjectHelper {
   writeBundledServiceWorker() {
     return polymer.addServiceWorker({
       project: this.project,
-      buildRoot: dest.bundledDir,
-      swPrecacheConfig: global.config.swPrecacheConfig,
-      path: global.config.serviceWorkerPath,
+      buildRoot: config.getBundledDir(),
+      swPrecacheConfig: config.swPrecacheConfig,
+      path: config.serviceWorkerPath,
       bundled: true
     });
   }
@@ -147,9 +147,9 @@ export class PolymerProjectHelper {
   writeUnbundledServiceWorker() {
     return polymer.addServiceWorker({
       project: this.project,
-      buildRoot: dest.unbundledDir,
-      swPrecacheConfig: global.config.swPrecacheConfig,
-      path: global.config.serviceWorkerPath
+      buildRoot: config.getUnbundledDir(),
+      swPrecacheConfig: config.swPrecacheConfig,
+      path: config.serviceWorkerPath
     });
   }
 

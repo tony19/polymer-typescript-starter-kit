@@ -1,6 +1,6 @@
+import * as config from '../config';
 import {argv as args} from 'yargs';
 import browserSync from 'browser-sync';
-import dest from '../dest';
 import gulp from 'gulp';
 import historyApiFallback from 'connect-history-api-fallback';
 import loadPlugins from 'gulp-load-plugins';
@@ -29,7 +29,7 @@ function serve() {
     //       will present a certificate warning in the browser.
     https: args.https,
     server: {
-      baseDir: [dest.debugDir, dest.unbundledDir, '.'],
+      baseDir: [config.getDebugDir(), config.getUnbundledDir(), '.'],
       middleware: [historyApiFallback()]
     }
   });

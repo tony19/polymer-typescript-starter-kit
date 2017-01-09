@@ -1,4 +1,4 @@
-import dest from '../dest';
+import * as config from '../config';
 import * as path from 'path';
 import gulp from 'gulp';
 import loadPlugins from 'gulp-load-plugins';
@@ -15,6 +15,12 @@ function scripts() {
                      .pipe($.sourcemaps.init())
                      .pipe(tsProject());
 
+  const build = {
+    bundledDir: config.getBundledDir(),
+    unbundledDir: config.getUnbundledDir(),
+    debugDir: config.getDebugDir(),
+  };
+
   return tsResult.js
     .pipe($.sourcemaps.write({
       includeContent: false,
@@ -25,12 +31,12 @@ function scripts() {
         return path.relative(path.dirname(sourceFile), file.cwd);
       }
     }))
-    .pipe(gulp.dest(dest.debugDir))
+    .pipe(gulp.dest(build.debugDir))
     .pipe($.if('*.js', $.uglify({
       preserveComments: 'some'
     })))
-    .pipe($.if(!!dest.unbundledDir, gulp.dest(dest.unbundledDir)))
-    .pipe($.if(!!dest.bundledDir, gulp.dest(dest.bundledDir)));
+    .pipe($.if(!!build.unbundledDir, gulp.dest(build.unbundledDir)))
+    .pipe($.if(!!build.bundledDir, gulp.dest(build.bundledDir)));
 }
 
 gulp.task('scripts', gulp.series('tslint', scripts));
