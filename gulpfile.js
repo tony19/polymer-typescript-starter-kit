@@ -85,7 +85,7 @@ function source() {
     // since the script body gets transpiled into JavaScript
     .pipe($.if('**/*.html', $.replace(/(<script.*type=["'].*\/)x-typescript/, '$1javascript')))
 
-    .pipe($.if('**/*.{js,ts}', $.print((filepath) => `src: ${filepath}`)))
+    .pipe($.if('**/*.{js,ts}', $.debug({title: 'src'})))
     .pipe($.if('**/*.ts', tsPipe()))
     .pipe($.if('**/*.js', $.babel({presets: ['es2015']})))
     .pipe($.if(['**/*.js', '!**/*.min.js'], $.uglify()))
@@ -104,7 +104,7 @@ function dependencies() {
       removeComments: true,
       minifyCSS: true
     })))
-    .pipe($.if(['**/*.js', '!**/system*.js'], $.print((filepath) => `dep: ${filepath}`)))
+    .pipe($.if(['**/*.js', '!**/system*.js'], $.debug({title: 'dep'})))
     .pipe($.if(['**/*.js', '!**/system*.js'], $.babel({presets: ['es2015']})))
     .pipe($.if(['**/*.js', '!**/*.min.js'], $.uglify()))
     .pipe(project.rejoin());

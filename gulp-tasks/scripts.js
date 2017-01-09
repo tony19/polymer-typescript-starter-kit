@@ -9,6 +9,7 @@ function scripts() {
     typescript: require('typescript')
   });
   const tsResult = gulp.src('{src,test}/**/*.ts')
+                     .pipe($.debug({title: 'scripts'}))
                      .pipe($.sourcemaps.init())
                      .pipe(tsProject());
 
