@@ -16,7 +16,7 @@ class MyApp extends polymer.Base {
   _pageChanged(page: string) {
     // Load page import on demand. Show 404 page if fails
     const resolvedPageUrl = this.resolveUrl(`../my-${page}/my-${page}.html`);
-    this.importHref(resolvedPageUrl, null, this._showPage404, true);
+    this.importHref(resolvedPageUrl, undefined, this._showPage404, true);
   }
 
   _showPage404() {
