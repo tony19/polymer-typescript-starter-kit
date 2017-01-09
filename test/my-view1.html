@@ -37,6 +37,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         describe('my-view1 tests', () => {
           let home;
 
+          before(() => System.import('components/my-view1/my-view1'));
+
           beforeEach(() => {
             home = fixture('basic');
           });
