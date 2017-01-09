@@ -7,13 +7,10 @@
  * Code distributed by Google as part of the polymer project is also
  * subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
  */
-
-'use strict';
-
-const gulp = require('gulp');
-const mergeStream = require('merge-stream');
-const polymer = require('polymer-build');
-const dest = require('./dest');
+import gulp from 'gulp';
+import mergeStream from 'merge-stream';
+import * as polymer from 'polymer-build';
+import dest from './dest';
 
 /**
  * This is the heart of polymer-build and exposes much of the
@@ -21,7 +18,7 @@ const dest = require('./dest');
  * to split the source files and dependency files into streams,
  * and tasks to rejoin them and output service workers
  */
-class PolymerProjectHelper {
+export class PolymerProjectHelper {
 
   constructor() {
     const polymerJSON = require(global.config.polymerJsonPath);
@@ -157,7 +154,3 @@ class PolymerProjectHelper {
   }
 
 }
-
-module.exports = {
-  PolymerProjectHelper
-};

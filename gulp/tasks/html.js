@@ -1,8 +1,10 @@
-const $ = require('gulp-load-plugins')();
-const gulp = require('gulp');
-const Project = require('../project');
-const lazypipe = require('lazypipe');
-require('./htmllint');
+import {PolymerProjectHelper} from '../project';
+import gulp from 'gulp';
+import lazypipe from 'lazypipe';
+import loadPlugins from 'gulp-load-plugins';
+import './htmllint';
+
+const $ = loadPlugins();
 
 class HtmlTask {
   constructor() {
@@ -79,11 +81,23 @@ class HtmlTask {
       .pipe($.if(['**/*.js', '!**/*.min.js'], $.uglify()))
       .pipe(this.project.rejoin());
   }
+
+  serviceWorker() {
+    return this.project.serviceWorker();
+  }
 }
 
+let htmlTask;
 function html() {
-  return new HtmlTask().build();
+  htmlTask = new HtmlTask();
+  return htmlTask.build();
 }
 
 gulp.task('html', gulp.series('htmllint', html));
-module.exports = html;
+
+// FIXME: Move this to sw.js once we determine how to cleanly get a
+// reference to the current htmlTask.
+function sw() {
+  return htmlTask.serviceWorker();
+}
+gulp.task('sw', gulp.series('html', sw));

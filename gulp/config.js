@@ -1,4 +1,4 @@
-const path = require('path');
+import * as path from 'path';
 
 global.config = {
   polymerJsonPath: path.join(process.cwd(), 'polymer.json'),

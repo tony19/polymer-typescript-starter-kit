@@ -1,8 +1,10 @@
-const $ = require('gulp-load-plugins')();
-const gulp = require('gulp');
-const path = require('path');
-const dest = require('../dest');
-require('./tslint');
+import dest from '../dest';
+import * as path from 'path';
+import gulp from 'gulp';
+import loadPlugins from 'gulp-load-plugins';
+import './tslint';
+
+const $ = loadPlugins();
 
 function scripts() {
   const tsProject = $.typescript.createProject('tsconfig.json', {
@@ -32,4 +34,3 @@ function scripts() {
 }
 
 gulp.task('scripts', gulp.series('tslint', scripts));
-module.exports = scripts;

@@ -1,5 +1,7 @@
-const $ = require('gulp-load-plugins')();
-const gulp = require('gulp');
+import gulp from 'gulp';
+import loadPlugins from 'gulp-load-plugins';
+
+const $ = loadPlugins();
 
 function tslint() {
   return gulp.src('{src,test}/**/*.ts')
@@ -13,4 +15,3 @@ function tslint() {
 }
 
 gulp.task('tslint', tslint);
-module.exports = tslint;

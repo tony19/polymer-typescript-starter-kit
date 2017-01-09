@@ -7,16 +7,11 @@
  * Code distributed by Google as part of the polymer project is also
  * subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
  */
+import del from 'del';
+import gulp from 'gulp';
 
-'use strict';
-
-const gulp = require('gulp');
-const del = require('del');
-
-// Returns a Promise to delete a directory
 function clean() {
   return del(global.config.build.rootDirectory);
 }
 
 gulp.task('clean', clean);
-module.exports = clean;

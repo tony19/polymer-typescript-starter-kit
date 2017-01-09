@@ -1,5 +1,7 @@
-const $ = require('gulp-load-plugins')();
-const gulp = require('gulp');
+import gulp from 'gulp';
+import loadPlugins from 'gulp-load-plugins';
+
+const $ = loadPlugins();
 
 function htmllint() {
   return gulp.src('src/**/*.html')
@@ -10,4 +12,3 @@ function htmllint() {
 }
 
 gulp.task('htmllint', htmllint);
-module.exports = htmllint;

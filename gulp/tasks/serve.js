@@ -1,12 +1,14 @@
-const $ = require('gulp-load-plugins')();
-const gulp = require('gulp');
-const historyApiFallback = require('connect-history-api-fallback');
-const browserSync = require('browser-sync');
-const dest = require('../dest');
-const args = require('yargs').argv;
-require('./html');
-require('./htmllint');
-require('./scripts');
+import {argv as args} from 'yargs';
+import browserSync from 'browser-sync';
+import dest from '../dest';
+import gulp from 'gulp';
+import historyApiFallback from 'connect-history-api-fallback';
+import loadPlugins from 'gulp-load-plugins';
+import './html';
+import './htmllint';
+import './scripts';
+
+const $ = loadPlugins();
 
 function serve() {
   const port = args.port || 8000;
@@ -42,4 +44,3 @@ function serve() {
 }
 
 gulp.task('serve', gulp.series(gulp.parallel('scripts', 'html'), serve));
-module.exports = serve;

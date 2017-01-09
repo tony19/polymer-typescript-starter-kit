@@ -1,5 +1,11 @@
-const gulp = require('gulp');
-const project = require('../project');
+// FIXME: 'sw' task is temporarily inside html.js until
+// we can figure out how to separate them.
 
-gulp.task('sw', project.serviceWorker);
-module.exports = project.serviceWorker;
+// import gulp from 'gulp';
+// import './html';
+//
+// function sw() {
+//   return html.project.serviceWorker;
+// }
+//
+// gulp.task('sw', gulp.series('html', sw));
