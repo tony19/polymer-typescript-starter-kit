@@ -1,7 +1,4 @@
 {
-  "files": [
-    "src/scripts/main.ts"
-  ],
   "compilerOptions": {
     "allowJs": true,
     "experimentalDecorators": true,
@@ -10,6 +7,7 @@
     "target": "es5"
   },
   "exclude": [
+    "build",
     "bower_components",
     "node_modules"
   ]
