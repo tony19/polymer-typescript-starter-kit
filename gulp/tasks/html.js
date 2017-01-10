@@ -57,7 +57,7 @@ class PolymerProject {
       $.if('**/*.html', $.replace(/(<script.*type=["'].*\/)x-typescript/, '$1javascript')),
 
       $.if('**/*.ts', tsPipe()),
-      $.if('**/*.js', $.babel({presets: ['es2015']})),
+      $.if('**/*.js', $.babel()),
       $.if(['**/*.{ts,js}', '!**/*.min.js'], $.uglify()),
       this.project.rejoin(),
     ]);
@@ -79,7 +79,7 @@ class PolymerProject {
         removeComments: true,
         minifyCSS: true
       })),
-      $.if(['**/*.js', '!**/dist/system*.js'], $.babel({presets: ['es2015']})),
+      $.if(['**/*.js', '!**/dist/system*.js'], $.babel()),
       $.if(['**/*.js', '!**/*.min.js'], $.uglify()),
       this.project.rejoin(),
     ]);
