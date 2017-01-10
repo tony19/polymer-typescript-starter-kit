@@ -14,5 +14,6 @@ import gulp from 'gulp';
 function clean() {
   return del(config.build.rootDirectory);
 }
+clean.description = 'Deletes output directory and any intermediate files';
 
 gulp.task('clean', clean);

@@ -22,4 +22,5 @@ function htmllint() {
     .pipe($.htmllint({}, htmllintReporter));
 }
 
+htmllint.description = 'Lints HTML files';
 gulp.task('htmllint', htmllint);

@@ -13,5 +13,8 @@ import gulp from 'gulp';
 const fs = require('fs');
 fs.readdirSync('gulp/tasks').forEach(file => require(`./gulp/tasks/${file}`));
 
-gulp.task('build', gulp.series('clean', gulp.parallel('scripts', 'html')));
+const build = gulp.series('clean', gulp.parallel('scripts', 'html'));
+build.description = 'Builds project';
+gulp.task('build', build);
+
 gulp.task('default', gulp.series('build', 'sw'));

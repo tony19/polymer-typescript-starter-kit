@@ -42,5 +42,6 @@ function serve() {
   $.watch('src/**/*.html', {verbose: true}, gulp.series('html', reload));
   $.watch('src/**/*.{js,ts}', {verbose: true}, gulp.series('scripts', reload));
 }
+serve.description = 'Starts development server (use --port to set port)';
 
 gulp.task('serve', serve);

@@ -13,5 +13,6 @@ function tslint() {
     }))
     .pipe($.tslint.report());
 }
+tslint.description = 'Lints TypeScript files';
 
 gulp.task('tslint', tslint);

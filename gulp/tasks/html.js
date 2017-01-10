@@ -6,7 +6,7 @@ import './htmllint';
 
 const $ = loadPlugins();
 
-class HtmlTask {
+class PolymerProject {
   constructor() {
     this.project = new PolymerProjectHelper();
   }
@@ -63,6 +63,7 @@ class HtmlTask {
       .pipe(this.project.rejoin());
   }
 
+  // TODO: Move dependencies to different task
   /**
    * Splits all of your dependency files into one big ReadableStream.
    * These are determined from walking your source files and from the
@@ -87,17 +88,20 @@ class HtmlTask {
   }
 }
 
-let htmlTask;
-function html() {
-  htmlTask = new HtmlTask();
-  return htmlTask.build();
-}
+let polymerProject;
+const htmlTask = gulp.series('htmllint', function html() {
+  polymerProject = new PolymerProject();
+  return polymerProject.build();
+});
 
-gulp.task('html', gulp.series('htmllint', html));
+htmlTask.description = 'Builds HTML files (and dependencies)';
+gulp.task('html', htmlTask);
 
 // FIXME: Move this to sw.js once we determine how to cleanly get a
-// reference to the current htmlTask.
-function sw() {
-  return htmlTask.serviceWorker();
-}
-gulp.task('sw', gulp.series('html', sw));
+// reference to the current polymerProject.
+const swTask = gulp.series('html', function sw() {
+  return polymerProject.serviceWorker();
+});
+
+swTask.description = 'Generates service worker';
+gulp.task('sw', swTask);
