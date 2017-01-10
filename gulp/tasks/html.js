@@ -32,17 +32,15 @@ class PolymerProject {
     const tsPipe = lazypipe()
       .pipe(tsProject)
       .pipe($.uglify)
-      .pipe(() => $.if((file) => {
-          // Since TypeScript transpiles *.ts into *.js, we need to rename it
-          // back to *.ts so that the rejoiner can find it to reinsert into the
-          // original HTML file.
-          //
-          // The temporary filenames from the HTML splitter follow this pattern:
-          // <orig_html_file_basename>.html_script_<index>.js
-          // e.g., my-view1.html_script_1.js
-          return /\.html_script/i.test(file.basename);
-        },
-        $.extReplace('.ts')));
+
+      // Since TypeScript transpiles *.ts into *.js, we need to rename it
+      // back to *.ts so that the rejoiner can find it to reinsert into the
+      // original HTML file.
+      //
+      // The temporary filenames from the HTML splitter follow this pattern:
+      // <orig_html_file_basename>.html_script_<index>.js
+      // e.g., my-view1.html_script_1.js
+      .pipe(() => $.if('**/*html_script_*.js', $.extReplace('.ts')));
 
     return this.project.splitSource()
       .pipe($.debug({title: 'html:src'}))
