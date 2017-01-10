@@ -24,6 +24,8 @@ const scriptsTask = gulp.series('tslint', function scripts() {
     debugDir: config.getDebugDir(),
   };
 
+  tsResult.dts.pipe(gulp.dest(build.debugDir));
+
   return pump([
     tsResult.js,
     $.sourcemaps.write({
