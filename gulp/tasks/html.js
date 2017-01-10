@@ -31,7 +31,6 @@ class PolymerProject {
     const tsProject = $.typescript.createProject('tsconfig.json');
     const tsPipe = lazypipe()
       .pipe(tsProject)
-      .pipe($.uglify)
 
       // Since TypeScript transpiles *.ts into *.js, we need to rename it
       // back to *.ts so that the rejoiner can find it to reinsert into the
@@ -57,7 +56,7 @@ class PolymerProject {
 
       .pipe($.if('**/*.ts', tsPipe()))
       .pipe($.if('**/*.js', $.babel({presets: ['es2015']})))
-      .pipe($.if(['**/*.js', '!**/*.min.js'], $.uglify()))
+      .pipe($.if(['**/*.{ts,js}', '!**/*.min.js'], $.uglify()))
       .pipe(this.project.rejoin());
   }
 
