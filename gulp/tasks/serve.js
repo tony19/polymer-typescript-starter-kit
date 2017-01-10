@@ -9,9 +9,10 @@ import './htmllint';
 import './scripts';
 
 const $ = loadPlugins();
+const DEFAULT_PORT = 8000;
 
 function serve() {
-  const port = args.port || 8000;
+  const port = args.port || DEFAULT_PORT;
 
   browserSync({
     port: port,
@@ -42,6 +43,9 @@ function serve() {
   $.watch('src/**/*.html', {verbose: true}, gulp.series('html', reload));
   $.watch('src/**/*.{js,ts}', {verbose: true}, gulp.series('scripts', reload));
 }
-serve.description = 'Starts development server (use --port to set port)';
+serve.description = 'Starts development server';
+serve.flags = {
+  '--port': `starting port number (default: ${DEFAULT_PORT})`
+};
 
 gulp.task('serve', serve);
