@@ -8,9 +8,9 @@
  * subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
  */
 import gulp from 'gulp';
+import * as fs from 'fs';
 
 // Load custom Gulp tasks
-const fs = require('fs');
 fs.readdirSync('gulp/tasks').forEach(file => require(`./gulp/tasks/${file}`));
 
 const build = gulp.series('clean', gulp.parallel('scripts', 'html'));
