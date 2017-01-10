@@ -6,7 +6,7 @@
     "type": "git",
     "url": "git@github.com:tony19/generator-polymer-init-typescript"
   },
-  "license": "MIT",
+  "license": "BSD-2-Clause",
   "bugs": {
     "url": "https://github.com/tony19/generator-polymer-init-typescript/issues"
   },
