@@ -1,5 +1,6 @@
 import gulp from 'gulp';
 import loadPlugins from 'gulp-load-plugins';
+import pump from 'pump';
 
 const $ = loadPlugins();
 
@@ -18,8 +19,10 @@ function htmllintReporter(filepath, issues) {
 }
 
 function htmllint() {
-  return gulp.src('src/**/*.html')
-    .pipe($.htmllint({}, htmllintReporter));
+  return pump([
+    gulp.src('src/**/*.html'),
+    $.htmllint({}, htmllintReporter),
+  ]);
 }
 
 htmllint.description = 'Lints HTML files';

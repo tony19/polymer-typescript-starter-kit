@@ -1,17 +1,20 @@
 import gulp from 'gulp';
 import loadPlugins from 'gulp-load-plugins';
+import pump from 'pump';
 
 const $ = loadPlugins();
 
 function tslint() {
-  return gulp.src('{src,test}/**/*.ts')
-    .pipe($.debug({title: 'tslint'}))
-    .pipe($.tslint({
+  return pump([
+    gulp.src('{src,test}/**/*.ts'),
+    $.debug({title: 'tslint'}),
+    $.tslint({
       tslint: require('tslint'),
       configuration: '.tslint.json',
       formatter: 'verbose'
-    }))
-    .pipe($.tslint.report());
+    }),
+    $.tslint.report(),
+  ]);
 }
 tslint.description = 'Lints TypeScript files';
 

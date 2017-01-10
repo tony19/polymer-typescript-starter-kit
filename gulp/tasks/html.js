@@ -2,6 +2,7 @@ import {PolymerProjectHelper} from '../project';
 import gulp from 'gulp';
 import lazypipe from 'lazypipe';
 import loadPlugins from 'gulp-load-plugins';
+import pump from 'pump';
 import './htmllint';
 
 const $ = loadPlugins();
@@ -41,23 +42,25 @@ class PolymerProject {
       // e.g., my-view1.html_script_1.js
       .pipe(() => $.if('**/*html_script_*.js', $.extReplace('.ts')));
 
-    return this.project.splitSource()
-      .pipe($.debug({title: 'html:src'}))
-      .pipe($.if('**/*.css', $.cleanCss()))
-      .pipe($.if('**/*.html', $.htmlmin({
+    return pump([
+      this.project.splitSource(),
+      $.debug({title: 'html:src'}),
+      $.if('**/*.css', $.cleanCss()),
+      $.if('**/*.html', $.htmlmin({
         collapseWhitespace: true,
         removeComments: true,
         minifyCSS: true
-      })))
+      })),
 
       // Replace <script type="text/x-typescript"> into <script>
       // since the script body gets transpiled into JavaScript
-      .pipe($.if('**/*.html', $.replace(/(<script.*type=["'].*\/)x-typescript/, '$1javascript')))
+      $.if('**/*.html', $.replace(/(<script.*type=["'].*\/)x-typescript/, '$1javascript')),
 
-      .pipe($.if('**/*.ts', tsPipe()))
-      .pipe($.if('**/*.js', $.babel({presets: ['es2015']})))
-      .pipe($.if(['**/*.{ts,js}', '!**/*.min.js'], $.uglify()))
-      .pipe(this.project.rejoin());
+      $.if('**/*.ts', tsPipe()),
+      $.if('**/*.js', $.babel({presets: ['es2015']})),
+      $.if(['**/*.{ts,js}', '!**/*.min.js'], $.uglify()),
+      this.project.rejoin(),
+    ]);
   }
 
   // TODO: Move dependencies to different task
@@ -67,17 +70,19 @@ class PolymerProject {
    * `extraDependencies` property of polymer.json.
    */
   splitDependencies() {
-    return this.project.splitDependencies()
-      .pipe($.debug({title: 'html:dep'}))
-      .pipe($.if('**/*.css', $.cleanCss()))
-      .pipe($.if('**/*.html', $.htmlmin({
+    return pump([
+      this.project.splitDependencies(),
+      $.debug({title: 'html:dep'}),
+      $.if('**/*.css', $.cleanCss()),
+      $.if('**/*.html', $.htmlmin({
         collapseWhitespace: true,
         removeComments: true,
         minifyCSS: true
-      })))
-      .pipe($.if(['**/*.js', '!**/dist/system*.js'], $.babel({presets: ['es2015']})))
-      .pipe($.if(['**/*.js', '!**/*.min.js'], $.uglify()))
-      .pipe(this.project.rejoin());
+      })),
+      $.if(['**/*.js', '!**/dist/system*.js'], $.babel({presets: ['es2015']})),
+      $.if(['**/*.js', '!**/*.min.js'], $.uglify()),
+      this.project.rejoin(),
+    ]);
   }
 
   serviceWorker() {
