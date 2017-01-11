@@ -1,6 +1,6 @@
+import * as utils from '../utils';
 import {PolymerProjectHelper} from '../project';
 import gulp from 'gulp';
-import lazypipe from 'lazypipe';
 import loadPlugins from 'gulp-load-plugins';
 import pump from 'pump';
 import './htmllint';
@@ -29,19 +29,6 @@ class PolymerProject {
    * tasks.
    */
   splitSource() {
-    const tsProject = $.typescript.createProject('tsconfig.json');
-    const tsPipe = lazypipe()
-      .pipe(tsProject)
-
-      // Since TypeScript transpiles *.ts into *.js, we need to rename it
-      // back to *.ts so that the rejoiner can find it to reinsert into the
-      // original HTML file.
-      //
-      // The temporary filenames from the HTML splitter follow this pattern:
-      // <orig_html_file_basename>.html_script_<index>.js
-      // e.g., my-view1.html_script_1.js
-      .pipe(() => $.if('**/*html_script_*.js', $.extReplace('.ts')));
-
     return pump([
       this.project.splitSource(),
       $.debug({title: 'html:src'}),
@@ -50,10 +37,10 @@ class PolymerProject {
       // since the script body gets transpiled into JavaScript
       $.if('**/*.html', $.replace(/(<script.*type=["'].*\/)x-typescript/, '$1javascript')),
 
-      $.if('**/*.ts', tsPipe()),
+      $.if('**/*.ts', utils.tsPipe()()),
       $.if('**/*.js', $.babel()),
 
-      $.if($.util.env.env === 'production', this.minifyPipe()()),
+      $.if($.util.env.env === 'production', utils.minifyPipe()()),
 
       this.project.rejoin(),
     ]);
@@ -70,47 +57,13 @@ class PolymerProject {
       this.project.splitDependencies(),
       $.debug({title: 'html:dep'}),
       $.if(['**/*.js', '!**/dist/system*.js'], $.babel()),
-      $.if($.util.env.env === 'production', this.minifyPipe()()),
+      $.if($.util.env.env === 'production', utils.minifyPipe()()),
       this.project.rejoin(),
     ]);
   }
 
   serviceWorker() {
     return this.project.serviceWorker();
-  }
-
-  minifyPipe() {
-    return lazypipe()
-      .pipe($.plumber)
-      .pipe($.if, '**/*.css', $.cleanCss())
-      .pipe($.if, '**/*.html', $.htmlmin({
-        collapseWhitespace: true,
-        removeComments: true,
-        minifyCSS: true
-      }))
-      .pipe($.if, ['**/*.js', '!**/*.min.js'], this.uglify())
-      .pipe($.plumber.stop);
-  }
-
-  uglify() {
-    // FIXME: Using $.uglify.on('error') causes build to hang
-    // on error events, and this message appears:
-    //   "Did you forget to signal async completion?"
-    //
-    // This is possibly caused by the use of lazypipe and pump.
-    // Ignore for now, since we want the stream to end to allow
-    // the user to fix the Uglify errors. Refactor later to use
-    // pump for this error handling.
-    const task = $.uglify();
-    task.on('error', function(err) {
-      $.util.log(
-        $.util.colors.cyan('[uglify]'),
-        `${err.cause.filename}:${err.cause.line}:${err.cause.col}`,
-        $.util.colors.red(`${err.cause.message}`)
-      );
-      this.emit('end');
-    });
-    return task;
   }
 }
 
