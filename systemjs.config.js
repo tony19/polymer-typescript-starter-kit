@@ -1,16 +1,14 @@
 (global => {
   // Map any paths encountered in `import` statements
   const map = {
-    'scripts':                        '/src/scripts',
-    'bower_components':               '/bower_components',
-    'components':                     '/src/components'
+    scripts:                        '/src/scripts',
+    components:                     '/src/components'
   };
 
-  const config = {
+  System.config({
     baseUrl: '/',
     defaultJSExtensions: true,
-    map: map
-  };
+    map
+  });
 
-  System.config(config);
 })(this);
