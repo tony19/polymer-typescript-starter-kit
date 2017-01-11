@@ -9,8 +9,45 @@
  */
 import gulp from 'gulp';
 import mergeStream from 'merge-stream';
+import * as path from 'path';
 import * as polymer from 'polymer-build';
 import config from './config';
+
+export class HtmlSplitter {
+  constructor(root) {
+    if (!root) {
+      const {projectRoot} = require(config.polymerJsonPath);
+      root = projectRoot || '.';
+    }
+    this.root = root;
+  }
+
+  /**
+   * Splits an HTML file into CSS, JS, and HTML streams
+   * @param filename path to HTML file
+   * @returns stream
+   */
+  split(filename) {
+    const projectConfig = {
+      root: this.root,
+      sources: [filename],
+    };
+    this.filename = filename;
+    this.project = new polymer.PolymerProject(projectConfig);
+    return gulp.src(filename).pipe(this.project.splitHtml());
+  }
+
+  /**
+   * Rejoins split streams into HTML file
+   * @param dest path to destination directory
+   * @returns stream
+   */
+  rejoin(dest) {
+    return this.project.rejoinHtml()
+      .pipe(this.project.bundler)
+      .pipe(gulp.dest(path.join(dest, this.filename, '..')));
+  }
+}
 
 /**
  * This is the heart of polymer-build and exposes much of the
@@ -21,8 +58,8 @@ import config from './config';
 export class PolymerProjectHelper {
 
   constructor() {
-    const polymerJSON = require(config.polymerJsonPath);
-    this.project = new polymer.PolymerProject(polymerJSON);
+    const polymerJson = require(config.polymerJsonPath);
+    this.project = new polymer.PolymerProject(polymerJson);
   }
 
   /**
