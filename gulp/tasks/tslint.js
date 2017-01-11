@@ -5,17 +5,15 @@ import pump from 'pump';
 const $ = loadPlugins();
 
 function tslint() {
-  return pump([
-    gulp.src('{src,test}/**/*.ts'),
-    $.debug({title: 'tslint'}),
-    $.tslint({
+  return gulp.src('{src,test}/**/*.ts')
+    .pipe($.debug({title: 'tslint'}))
+    .pipe($.tslint({
       tslint: require('tslint'),
       configuration: '.tslint.json',
       formatter: 'verbose'
-    }),
-    $.tslint.report(),
-  ]);
+    }))
+    .pipe($.tslint.report());
 }
-tslint.description = 'Lints TypeScript files';
 
+tslint.description = 'Lints TypeScript files';
 gulp.task('tslint', tslint);
