@@ -17,4 +17,5 @@ const build = gulp.series('clean', gulp.parallel('scripts', 'html'));
 build.description = 'Builds project';
 gulp.task('build', build);
 
-gulp.task('default', gulp.series('build', 'sw'));
+// gulp.task('default', gulp.series('build', 'sw'));
+gulp.task('default', gulp.series('build'));

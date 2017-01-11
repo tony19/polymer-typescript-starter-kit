@@ -67,20 +67,10 @@ class PolymerProject {
   }
 }
 
-let polymerProject;
 const htmlTask = gulp.series('htmllint', function html() {
-  polymerProject = new PolymerProject();
+  const polymerProject = new PolymerProject();
   return polymerProject.build();
 });
 
 htmlTask.description = 'Builds HTML files (and dependencies)';
 gulp.task('html', htmlTask);
-
-// FIXME: Move this to sw.js once we determine how to cleanly get a
-// reference to the current polymerProject.
-const swTask = gulp.series('html', function sw() {
-  return polymerProject.serviceWorker();
-});
-
-swTask.description = 'Generates service worker';
-gulp.task('sw', swTask);
