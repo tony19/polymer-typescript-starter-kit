@@ -1,6 +1,5 @@
 import gulp from 'gulp';
 import loadPlugins from 'gulp-load-plugins';
-import pump from 'pump';
 
 const $ = loadPlugins();
 
