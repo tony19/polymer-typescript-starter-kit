@@ -4,11 +4,11 @@
   "description": "TypeScript support for Polymer 1.0 custom build apps",
   "repository": {
     "type": "git",
-    "url": "git@github.com:tony19/generator-polymer-init-typescript"
+    "url": "git@github.com:tony19/polymer-typescript-starter-kit"
   },
   "license": "BSD-2-Clause",
   "bugs": {
-    "url": "https://github.com/tony19/generator-polymer-init-typescript/issues"
+    "url": "https://github.com/tony19/polymer-typescript-starter-kit/issues"
   },
   "engines": {
     "node": ">=4.0"
