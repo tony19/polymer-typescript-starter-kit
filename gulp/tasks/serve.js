@@ -1,8 +1,8 @@
-import {HtmlSplitter} from '../project';
 import * as config from '../config';
 import * as path from 'path';
 import * as utils from '../utils';
 import {argv as args} from 'yargs';
+import {HtmlSplitter} from '../project';
 import browserSync from 'browser-sync';
 import gulp from 'gulp';
 import historyApiFallback from 'connect-history-api-fallback';
@@ -37,24 +37,15 @@ function serve() {
     }
   });
 
-  // Wrap this in named function so that Gulp4 displays the name
-  const reload = function reload() {
-    browserSync.reload();
-  };
-
-  function processFile(event) {
-    console.log('watch', event);
+  gulp.watch('src/**/*.html').on('change', event => {
     if (event.type === 'changed') {
       const filename = event.path.replace(process.cwd() + path.sep, '');
       const stream = singleHtml(filename);
-      stream.on('finish', reload);
+      stream.on('finish', () => browserSync.reload());
       return stream;
     }
-  }
-
-  // gulp.watch('src/**/*.html').on('change', gulp.series('html', reload));
-  gulp.watch('src/**/*.html').on('change', processFile);
-  // gulp.watch('src/**/*.{js,ts}').on('change', gulp.series('scripts', reload));
+  });
+  gulp.watch('src/**/*.{js,ts}', ['scripts', () => browserSync.reload()]);
 }
 serve.description = 'Starts development server';
 serve.flags = {
@@ -74,9 +65,7 @@ function singleHtml(filename) {
     // since the script body gets transpiled into JavaScript
     $.if('**/*.html', $.replace(/(<script.*type=["'].*\/)x-typescript/, '$1javascript')),
 
-    // $.plumber(),
-    // $.if('**/*.html', $.htmllint()),
-    // $.plumber.stop(),
+    $.if('**/*.html', $.htmllint()),
     $.if('**/*.ts', utils.tsPipe()()),
     $.if('**/*.js', $.babel()),
     $.if($.util.env.env === 'production', utils.minifyPipe()()),

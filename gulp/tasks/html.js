@@ -67,10 +67,10 @@ class PolymerProject {
   }
 }
 
-const htmlTask = gulp.series('htmllint', function html() {
+const htmlTask = function html() {
   const polymerProject = new PolymerProject();
   return polymerProject.build();
-});
+};
 
 htmlTask.description = 'Builds HTML files (and dependencies)';
-gulp.task('html', htmlTask);
+gulp.task('html', ['htmllint'], htmlTask);

@@ -13,9 +13,5 @@ import * as fs from 'fs';
 // Load custom Gulp tasks
 fs.readdirSync('gulp/tasks').forEach(file => require(`./gulp/tasks/${file}`));
 
-const build = gulp.series('clean', gulp.parallel('scripts', 'html'));
-build.description = 'Builds project';
-gulp.task('build', build);
-
-// gulp.task('default', gulp.series('build', 'sw'));
-gulp.task('default', gulp.series('build'));
+gulp.task('build', ['clean', 'scripts', 'html']);
+gulp.task('default', ['build']);

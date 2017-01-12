@@ -7,7 +7,7 @@ import './tslint';
 
 const $ = loadPlugins();
 
-const scriptsTask = gulp.series('tslint', function scripts() {
+const scriptsTask = function scripts() {
   const tsProject = $.typescript.createProject('tsconfig.json', {
     typescript: require('typescript')
   });
@@ -44,7 +44,7 @@ const scriptsTask = gulp.series('tslint', function scripts() {
     $.if(!!build.unbundledDir, gulp.dest(build.unbundledDir)),
     $.if(!!build.bundledDir, gulp.dest(build.bundledDir)),
   ]);
-});
+};
 
 scriptsTask.description = 'Builds all TypeScript files';
-gulp.task('scripts', scriptsTask);
+gulp.task('scripts', ['tslint'], scriptsTask);
