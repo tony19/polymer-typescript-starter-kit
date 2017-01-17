@@ -9,8 +9,9 @@
       "request": "launch",
       "runtimeExecutable": "/Applications/Google Chrome Canary.app/Contents/MacOS/Google Chrome Canary",
       "sourceMaps": true,
-      "url": "http://localhost:8000",
-      "webRoot": "${workspaceRoot}/build/unbundled"
+      "url": "http://localhost:8080",
+      "webRoot": "${workspaceRoot}/build/unbundled",
+      "userDataDir": "${workspaceRoot}/.vscode/chrome"
     },
     {
       "name": "Attach to Chrome",
