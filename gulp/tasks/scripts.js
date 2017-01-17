@@ -41,8 +41,8 @@ const scriptsTask = function scripts() {
     $.if('*.js', $.uglify({
       preserveComments: 'some'
     })),
-    $.if(!!build.unbundledDir, gulp.dest(build.unbundledDir)),
-    $.if(!!build.bundledDir, gulp.dest(build.bundledDir)),
+    $.if(build.unbundledDir, gulp.dest(build.unbundledDir || '')),
+    $.if(build.bundledDir, gulp.dest(build.bundledDir || '')),
   ]);
 };
 
