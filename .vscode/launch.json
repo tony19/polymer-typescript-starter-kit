@@ -1,0 +1,23 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "diagnosticLogging": true,
+      "name": "Launch Chrome against localhost",
+      "type": "chrome",
+      "port": 9222,
+      "request": "launch",
+      "runtimeExecutable": "/Applications/Google Chrome Canary.app/Contents/MacOS/Google Chrome Canary",
+      "sourceMaps": true,
+      "url": "http://localhost:8000",
+      "webRoot": "${workspaceRoot}/build/unbundled"
+    },
+    {
+      "name": "Attach to Chrome",
+      "type": "chrome",
+      "request": "attach",
+      "port": 9222,
+      "webRoot": "${workspaceRoot}"
+    }
+  ]
+}
