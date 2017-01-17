@@ -17,7 +17,9 @@ class PolymerProject {
       this.splitSource.bind(this),
       this.splitDependencies.bind(this)
     );
-    return mergeTask.call(this.project);
+    return mergeTask.call(this.project).then(() => {
+      return this.project.serviceWorker();
+    });
   }
 
   /**
