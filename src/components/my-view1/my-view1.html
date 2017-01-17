@@ -14,10 +14,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <dom-module id="my-view1">
   <template>
     <style include="shared-styles">
-      :host {
-        display: block;
-        padding: 10px;
-      }
+      /* Sass transpiles and inlines this file here */
+      @import 'my-view1.scss';
     </style>
 
     <div class="card">

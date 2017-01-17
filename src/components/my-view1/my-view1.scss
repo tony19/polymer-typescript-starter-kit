@@ -1,0 +1,10 @@
+:host {
+  display: block;
+  padding: 10px;
+}
+
+$color: #f00;
+
+div {
+  color: lighten($color, 20%);
+}

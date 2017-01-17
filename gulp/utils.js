@@ -20,6 +20,7 @@ function tsPipe() {
 
 function minifyPipe() {
   return lazypipe()
+    .pipe($.debug, {title: 'minify'})
     .pipe($.plumber)
     .pipe($.if, '**/*.css', $.cleanCss())
     .pipe($.if, '**/*.html', $.htmlmin({
