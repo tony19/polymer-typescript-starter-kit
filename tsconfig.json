@@ -7,6 +7,8 @@
     "noImplicitThis": true,
     "noUnusedLocals": true,
     "removeComments": true,
+    "sourceMap": true,
+    "inlineSourceMap": true,
     "strictNullChecks": true,
     "target": "es5"
   },
