@@ -46,7 +46,7 @@
     "lazypipe": "^1.0.1",
     "merge-stream": "^1.0.1",
     "plylog": "^0.4.0",
-    "polymer-build": "^0.6.0",
+    "polymer-build": "github:tony19-contrib/polymer-build#dist-css-rejoin",
     "polymer-cli": "^0.17.0",
     "pump": "^1.0.2",
     "tslint": "^4.3.1",
