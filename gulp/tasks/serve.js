@@ -46,6 +46,7 @@ function serve() {
     }
   });
   gulp.watch('src/**/*.{js,ts}', ['scripts', () => browserSync.reload()]);
+  gulp.watch('src/**/*.{css,sass,scss}', ['styles', () => browserSync.reload()]);
 }
 serve.description = 'Starts development server';
 serve.flags = {
@@ -65,6 +66,7 @@ function singleHtml(filename) {
     // since the script body gets transpiled into JavaScript
     $.if('**/*.html', $.replace(/(<script.*type=["'].*\/)x-typescript/, '$1javascript')),
 
+    $.if('**/*.css', $.sass().on('error', $.sass.logError)),
     $.if('**/*.html', $.htmllint()),
     $.if('**/*.ts', utils.tsPipe()()),
     $.if('**/*.js', $.babel()),
