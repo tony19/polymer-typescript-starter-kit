@@ -4,14 +4,14 @@
 
 > Polymer Starter Kit w/TypeScript support
 
-This template is a starting point for building Polymer apps (based on [Polymer Starter Kit 2.1.1](https://github.com/PolymerElements/polymer-starter-kit/releases/tag/v2.1.1))
-using TypeScript, featuring:
+*Features*
 
  * Inline TypeScript transpilation (via `<script type="text/x-typescript>`)
  * [PolymerTS](https://github.com/nippur72/PolymerTS)
- * Live reload on development server
+ * Inline Sass transpilation (via `<style>`)
+ * Live reload on development server (buggy right now)
 
-With inline TypeScript transpilation and PolymerTS, you could define elements like [this](src/components/my-view3/my-view3.html):
+With inline TypeScript transpilation and PolymerTS, you could define elements like [this](https://github.com/tony19/polymer-typescript-starter-kit/blob/7093acd/src/components/my-view3/my-view3.html#L31-L38):
 
 ```html
 <dom-module id="my-view3">
@@ -30,7 +30,7 @@ With inline TypeScript transpilation and PolymerTS, you could define elements li
 </dom-module>
 ```
 
-You could also import TypeScript files like [this](src/components/my-view2/my-view2.html):
+You could also import TypeScript files like [this](https://github.com/tony19/polymer-typescript-starter-kit/blob/7093acd/src/components/my-view2/my-view2.html#L31):
 
 ```html
 <dom-module id="my-view2">
@@ -69,12 +69,13 @@ Usage
   gulp [TASK] [OPTIONS...]
 
 Available tasks
-  clean         Cleans output directory
   build         Clean builds project (dest: build/[un]bundled)
+  clean         Cleans output directory
+  csslint       Lints CSS files
   html          Builds HTML files and dependencies
   htmllint      Lints HTML files
   scripts       Builds TypeScript files
   serve         Starts development server (use `--port` to change port)
-  sw            Generates service worker for build output
+  styles        Builds CSS/Sass files
   tslint        Lints TypeScript files
 ```
