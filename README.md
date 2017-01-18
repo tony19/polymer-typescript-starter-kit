@@ -56,8 +56,6 @@ Then run these commands to build the project and open a browser to it:
 
 ```shell
 yarn
-# yarn currently doesn't support GitHub branches...
-npm i -D tony19-contrib/polymer-build#dist-css-rejoin
 bower install
 yarn build
 yarn start
