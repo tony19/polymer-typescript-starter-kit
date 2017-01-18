@@ -44,7 +44,9 @@ export class HtmlSplitter {
    */
   rejoin(dest) {
     return this.project.rejoinHtml()
-      .pipe(this.project.bundler)
+      // FIXME: polymer-build's bundler is broken
+      // https://github.com/Polymer/polymer-build/issues/110
+      // .pipe(this.project.bundler)
       .pipe(gulp.dest(path.join(dest, this.filename, '..')));
   }
 }
