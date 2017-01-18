@@ -26,7 +26,7 @@ const scriptsTask = function scripts() {
 
   tsResult.dts.pipe(gulp.dest(build.debugDir));
 
-  return pump([
+  const stream = pump([
     tsResult.js,
     $.sourcemaps.write({
       includeContent: false,
@@ -41,9 +41,16 @@ const scriptsTask = function scripts() {
     $.if('*.js', $.uglify({
       preserveComments: 'some'
     })),
-    $.if(build.unbundledDir, gulp.dest(build.unbundledDir || '')),
-    $.if(build.bundledDir, gulp.dest(build.bundledDir || '')),
   ]);
+
+  if (build.bundledDir) {
+    stream.pipe(gulp.dest(build.bundledDir));
+  }
+  if (build.unbundledDir) {
+    stream.pipe(gulp.dest(build.unbundledDir));
+  }
+
+  return stream;
 };
 
 scriptsTask.description = 'Builds all TypeScript files';
