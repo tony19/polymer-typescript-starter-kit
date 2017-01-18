@@ -49,6 +49,7 @@
     "polymer-build": "github:tony19-contrib/polymer-build#dist-css-rejoin",
     "polymer-cli": "^0.17.0",
     "pump": "^1.0.2",
+    "run-sequence": "^1.2.2",
     "tslint": "^4.3.1",
     "typescript": "^2.1.4",
     "yargs": "^6.6.0"

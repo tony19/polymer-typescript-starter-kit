@@ -9,9 +9,12 @@
  */
 import gulp from 'gulp';
 import * as fs from 'fs';
+import runSequence from 'run-sequence';
 
 // Load custom Gulp tasks
 fs.readdirSync('gulp/tasks').forEach(file => require(`./gulp/tasks/${file}`));
 
-gulp.task('build', ['clean', 'scripts', 'html']);
-gulp.task('default', ['build']);
+gulp.task('build', ['scripts', 'styles', 'html']);
+gulp.task('default', done => {
+  return runSequence('clean', 'build', done);
+});
