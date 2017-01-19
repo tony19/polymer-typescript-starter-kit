@@ -10,8 +10,8 @@
         "lcov"
       ],
       "include": [
-        "*.js",
-        "*.html"
+        "**/*.js",
+        "**/*.html"
       ],
       "exclude": []
     }
