@@ -24,6 +24,13 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-/**
- * Created by tony on 1/5/17.
- */
+
+export class App {
+  log(logger: (level: string, msg: string) => void, msg: string, debug: boolean) {
+    if (debug) {
+      logger('DEBUG', msg);
+    } else {
+      logger('INFO', msg);
+    }
+  }
+}

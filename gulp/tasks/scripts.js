@@ -35,6 +35,10 @@ const $ = loadPlugins();
 
 const scriptsTask = function scripts() {
   const tsProject = $.typescript.createProject('tsconfig.json', {
+    // tsconfig.json is currently using module:commonjs because
+    // `nyc` fails without it. We override that here as our normal
+    // build uses SystemJS.
+    module: 'system',
     typescript: require('typescript')
   });
   const tsResult = pump([

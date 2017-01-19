@@ -2,7 +2,7 @@
   "compilerOptions": {
     "declaration": true,
     "experimentalDecorators": true,
-    "module": "system",
+    "module": "commonjs",
     "noImplicitAny": true,
     "noImplicitThis": true,
     "noUnusedLocals": true,
