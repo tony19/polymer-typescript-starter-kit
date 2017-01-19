@@ -1,0 +1,19 @@
+{
+  "suites": [
+    "test/components/my-view1/my-view1.html"
+  ],
+  "plugins": {
+    "istanbul": {
+      "dir": "./build/coverage",
+      "reporters": [
+        "text-summary",
+        "lcov"
+      ],
+      "include": [
+        "*.js",
+        "*.html"
+      ],
+      "exclude": []
+    }
+  }
+}
