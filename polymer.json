@@ -9,7 +9,6 @@
   ],
   "sources": [
     "src/components/**/*.html",
-    "images/**/*",
     "bower.json"
   ],
   "extraDependencies": [
