@@ -18,3 +18,4 @@ before_script:
   - bower install
 script:
   - xvfb-run npm test
+  - yarn tezt
