@@ -21,6 +21,7 @@
   },
   "devDependencies": {
     "@types/chai": "^3.4.34",
+    "@types/es6-shim": "^0.31.32",
     "@types/mocha": "^2.2.38",
     "@types/polymer-ts": "^0.1.28",
     "@types/sinon-chai": "^2.7.27",
@@ -68,7 +69,6 @@
     "yargs": "^6.6.0"
   },
   "dependencies": {
-    "@types/es6-shim": "^0.31.32",
     "systemjs": "^0.19.41"
   },
   "nyc": {
