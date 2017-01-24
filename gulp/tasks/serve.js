@@ -50,8 +50,8 @@ function serve() {
     logPrefix: 'PSK',
     snippetOptions: {
       rule: {
-        match: '<span id="browser-sync-binding"></span>',
-        fn: snippet => snippet
+        match: '</body>',
+        fn: (snippet, match) => snippet + match
       }
     },
     // Note: this uses an unsigned certificate which on first access
