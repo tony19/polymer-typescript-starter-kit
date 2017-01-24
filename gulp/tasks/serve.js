@@ -45,9 +45,10 @@ function serve() {
   const port = args.port || DEFAULT_PORT;
 
   browserSync({
-    port: port,
-    notify: false,
     logPrefix: 'PSK',
+    minify: false,
+    notify: true,
+    port: port,
     snippetOptions: {
       rule: {
         match: '</body>',
