@@ -57,7 +57,8 @@ function serve() {
     },
     // Note: this uses an unsigned certificate which on first access
     //       will present a certificate warning in the browser.
-    // https: args.https,
+    https: args.https,
+    httpModule: args.https ? 'http2' : undefined,
     server: {
       baseDir: [config.getDebugDir(), config.getUnbundledDir(), '.'],
       middleware: [historyApiFallback()]
