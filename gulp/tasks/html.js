@@ -85,7 +85,7 @@ class PolymerProject {
     return pump([
       this.project.splitDependencies(),
       $.debug({title: 'html:dep'}),
-      $.if(['**/*.js', '!**/dist/system*.js'], $.babel()),
+      $.if(['**/*.js', '!**/*.min.js', '!**/dist/system*.js'], $.babel()),
       $.if($.util.env.env === 'production', utils.minifyPipe()()),
       this.project.rejoin(),
     ]);
