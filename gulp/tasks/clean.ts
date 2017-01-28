@@ -34,12 +34,12 @@
  * subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
  */
 import * as config from '../config';
-import del from 'del';
-import gulp from 'gulp';
+import * as del from 'del';
+import * as gulp from 'gulp';
 
 function clean() {
-  return del(config.build.rootDirectory);
+  return del((<any>config).build.rootDirectory);
 }
-clean.description = 'Deletes output directory and any intermediate files';
+(<any>clean).description = 'Deletes output directory and any intermediate files';
 
 gulp.task('clean', clean);

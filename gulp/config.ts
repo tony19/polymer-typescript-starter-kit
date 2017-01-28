@@ -26,7 +26,35 @@
  */
 import * as path from 'path';
 
-const config = {
+interface Config {
+  polymerJsonPath: string,
+  build: {
+    rootDirectory: string,
+    bundledDirectory: string,
+    unbundledDirectory: string,
+    debugDirectory: string,
+    // Accepts either 'bundled', 'unbundled', or 'both'
+    // A bundled version will be vulcanized and sharded. An unbundled version
+    // will not have its files combined (this is for projects using HTTP/2
+    // server push). Using the 'both' option will create two output projects,
+    // one for bundled and one for unbundled
+    // TODO: Add flag to enable bundling. Use only 'unubundled' for now
+    // because of https://github.com/Polymer/polymer-build/issues/110.
+    bundleType: 'unbundled' | 'bundled' | 'both'
+  },
+  // Path to your service worker, relative to the build root directory
+  serviceWorkerPath: string,
+  // Service Worker precache options based on
+  // https://github.com/GoogleChrome/sw-precache#options-parameter
+  swPrecacheConfig: {
+    navigateFallback: string
+  },
+  getBundledDir?: () => string,
+  getUnbundledDir?: () => string,
+  getDebugDir?: () => string,
+}
+
+const config: Config = {
   polymerJsonPath: path.join(process.cwd(), 'polymer.json'),
   build: {
     rootDirectory: 'build',
@@ -57,11 +85,12 @@ const config = {
  * @returns path to bundled-build directory
  */
 config.getBundledDir = () => {
-  return ['both', 'bundled'].includes(config.build.bundleType) &&
-    path.join(
-      config.build.rootDirectory,
-      config.build.bundledDirectory
-    );
+  return ['both', 'bundled'].indexOf(config.build.bundleType) > -1
+    ? path.join(
+        config.build.rootDirectory,
+        config.build.bundledDirectory
+      )
+    : '';
 };
 
 /**
@@ -70,11 +99,12 @@ config.getBundledDir = () => {
  * @returns path to unbundled-build directory
  */
 config.getUnbundledDir = () => {
-  return ['both', 'unbundled'].includes(config.build.bundleType) &&
-    path.join(
-      config.build.rootDirectory,
-      config.build.unbundledDirectory
-    );
+  return ['both', 'unbundled'].indexOf(config.build.bundleType) > -1
+    ? path.join(
+        config.build.rootDirectory,
+        config.build.unbundledDirectory
+      )
+    : '';
 };
 
 config.getDebugDir = () => {
