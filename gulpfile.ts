@@ -33,14 +33,14 @@
  * Code distributed by Google as part of the polymer project is also
  * subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
  */
-import gulp from 'gulp';
+import * as gulp from 'gulp';
 import * as fs from 'fs';
-import runSequence from 'run-sequence';
+import * as runSequence from 'run-sequence';
 
 // Load custom Gulp tasks
 fs.readdirSync('gulp/tasks').forEach(file => require(`./gulp/tasks/${file}`));
 
 gulp.task('build', ['scripts', 'styles', 'html', 'images']);
-gulp.task('default', done => {
+gulp.task('default', (done: any) => {
   return runSequence('clean', 'build', done);
 });
