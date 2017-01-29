@@ -68,13 +68,7 @@ const scriptsTask = function scripts() {
     })),
   ]);
 
-  if (config.build.bundledDir) {
-    stream.pipe(gulp.dest(config.build.bundledDir));
-  }
-  if (config.build.unbundledDir) {
-    stream.pipe(gulp.dest(config.build.unbundledDir));
-  }
-
+  stream.pipe(gulp.dest(config.build.unbundledDir));
   return stream;
 };
 
