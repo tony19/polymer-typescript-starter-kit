@@ -35,52 +35,13 @@
  */
 import * as config from './config';
 import * as gulp from 'gulp';
-import * as path from 'path';
 import * as polymer from 'polymer-build';
+import * as loadPlugins from 'gulp-load-plugins';
+import * as utils from './utils';
 const mergeStream = require('merge-stream');
+const pump = require('pump');
 
-export class HtmlSplitter {
-  root?: string;
-  filename: string;
-  project: polymer.PolymerProject;
-
-  constructor(root?: string) {
-    if (!root) {
-      const {projectRoot} = require((<any>config).polymerJsonPath);
-      root = projectRoot || '.';
-    }
-    this.root = root;
-  }
-
-  /**
-   * Splits an HTML file into CSS, JS, and HTML streams
-   * @param filename path to HTML file
-   * @returns stream
-   */
-  split(filename: string): NodeJS.ReadWriteStream {
-    const projectConfig = {
-      root: this.root,
-      sources: [filename],
-    };
-    this.filename = filename;
-    this.project = new polymer.PolymerProject(projectConfig);
-    return gulp.src(filename).pipe(this.project.splitHtml());
-  }
-
-  /**
-   * Rejoins split streams into HTML file
-   * @param dest path to destination directory
-   * @returns stream
-   */
-  rejoin(dest: string): NodeJS.ReadWriteStream {
-    const stream = this.project.rejoinHtml();
-    // FIXME: polymer-build's bundler is broken
-    // https://github.com/Polymer/polymer-build/issues/110
-    // stream.pipe(this.project.bundler);
-    stream.pipe(gulp.dest(path.join(dest, this.filename, '..')));
-    return stream;
-  }
-}
+const $: any = loadPlugins();
 
 /**
  * This is the heart of polymer-build and exposes much of the

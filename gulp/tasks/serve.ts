@@ -31,7 +31,7 @@ import * as path from 'path';
 import * as utils from '../utils';
 import * as loadPlugins from 'gulp-load-plugins';
 import {argv as args} from 'yargs';
-import {HtmlSplitter} from '../project';
+import {HtmlSplitter} from '../html-splitter';
 const historyApiFallback = require('connect-history-api-fallback');
 const pump = require('pump');
 import './html';
