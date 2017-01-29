@@ -27,13 +27,23 @@
 import * as gulp from 'gulp';
 import * as path from 'path';
 import {PolymerProject} from '../project';
+import {argv as args} from 'yargs';
 import './htmllint';
 
 const htmlTask = function html() {
   const polymerJsonPath = path.join(process.cwd(), 'polymer.json');
   const polymerProject = new PolymerProject(polymerJsonPath);
-  return polymerProject.build();
+  return polymerProject.build({
+    bundle: args.bundle,
+    buildServiceWorker: args.sw,
+    buildDependencies: args.deps
+  });
 };
 
 (<any>htmlTask).description = 'Builds HTML files (and dependencies)';
+(<any>htmlTask).flags = {
+  '--bundle': `bundle output`,
+  '--deps': `build dependencies`,
+  '--sw': `generate service worker`
+};
 gulp.task('html', ['htmllint'], htmlTask);

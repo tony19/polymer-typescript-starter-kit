@@ -24,15 +24,6 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-/**
- * @license
- * Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
- * This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
- * The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
- * The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
- * Code distributed by Google as part of the polymer project is also
- * subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
- */
 import * as gulp from 'gulp';
 import * as polymerBuild from 'polymer-build';
 import * as loadPlugins from 'gulp-load-plugins';
@@ -43,178 +34,46 @@ const pump = require('pump');
 const $: any = loadPlugins();
 const config = require('./config.json');
 
-/**
- * This is the heart of polymer-build and exposes much of the
- * work that Polymer CLI usually does for you. There are tasks
- * to split the source files and dependency files into streams,
- * and tasks to rejoin them and output service workers
- */
-class PolymerProjectHelper {
-  project: polymerBuild.PolymerProject;
-
-  constructor(polymerJsonPath: string) {
-    const polymerJson = require(polymerJsonPath);
-    this.project = new polymerBuild.PolymerProject(polymerJson);
-  }
-
-  /**
-   * Returns a ReadableStream of all the source files.
-   * Source files are those in src/** as well as anything
-   * added to the sourceGlobs property of polymer.json.
-   * @returns {Transform}
-   */
-  splitSource(): NodeJS.ReadWriteStream {
-    return this.project.sources().pipe(this.project.splitHtml());
-  }
-
-  /**
-   * Returns a ReadableStream of all the dependency files.
-   * Dependency files are those in bower_components.
-   * @returns {Transform}
-   */
-  splitDependencies(): NodeJS.ReadWriteStream {
-    return this.project.dependencies().pipe(this.project.splitHtml());
-  }
-
-  /**
-   * Returns a WriteableStream to rejoin all split files
-   * @returns {Transform}
-   */
-  rejoin(): NodeJS.ReadWriteStream {
-    return this.project.rejoinHtml();
-  }
-
-  /**
-   * Returns a function which accepts references to functions that generate
-   * ReadableStreams. These ReadableStreams will then be merged, and used to
-   * generate the bundled and unbundled versions of the site.
-   * Takes an argument for the user to specify the kind of output they want
-   * either bundled or unbundled. If this argument is omitted it will output both
-   * @param source source stream
-   * @param dependencies stream of dependencies
-   * @returns function that merges the two streams, and writes the build output
-   */
-  merge(source: Function, dependencies: Function) {
-    return () => {
-      const mergedFiles = mergeStream(source(), dependencies());
-      const bundleType = config.build.bundleType;
-      let outputs = [];
-
-      if (bundleType === 'both' || bundleType === 'bundled') {
-        outputs.push(this.writeBundledOutput(polymerBuild.forkStream(mergedFiles)));
-      }
-      if (bundleType === 'both' || bundleType === 'unbundled') {
-        outputs.push(this.writeUnbundledOutput(polymerBuild.forkStream(mergedFiles)));
-      }
-
-      return Promise.all(outputs);
-    };
-  }
-
-  /**
-   * Run the files through a bundling step which will vulcanize/shard them
-   * then output to the dest dir
-   * @param stream
-   * @returns Promise
-   */
-  writeBundledOutput(stream: any) {
-    return new Promise(resolve => {
-      stream.pipe(this.project.bundler)
-        .pipe(gulp.dest(config.build.bundledDir))
-        .on('end', resolve);
-    });
-  }
-
-  /**
-   * Just output files to the dest dir without bundling. This is for projects that
-   * use HTTP/2 server push
-   * @param stream
-   * @returns Promise
-   */
-  writeUnbundledOutput(stream: any) {
-    return new Promise(resolve => {
-      stream.pipe(gulp.dest(config.build.unbundledDir))
-        .on('end', resolve);
-    });
-  }
-
-  /**
-   * Returns a function which takes an argument for the user to specify the kind
-   * of bundle they're outputting (either bundled or unbundled) and generates a
-   * service worker for that bundle.
-   * If this argument is omitted it will create service workers for both bundled
-   * and unbundled output
-   * @returns Promise
-   */
-  serviceWorker() {
-    const bundleType = config.build.bundleType;
-    let workers = [];
-
-    if (bundleType === 'both' || bundleType === 'bundled') {
-      workers.push(this.writeBundledServiceWorker());
-    }
-    if (bundleType === 'both' || bundleType === 'unbundled') {
-      workers.push(this.writeUnbundledServiceWorker());
-    }
-
-    return Promise.all(workers);
-  }
-
-  /**
-   * Returns a Promise to generate a service worker for bundled output
-   */
-  writeBundledServiceWorker() {
-    return polymerBuild.addServiceWorker({
-      project: this.project,
-      buildRoot: config.build.bundledDir,
-      swPrecacheConfig: config.swPrecacheConfig,
-      path: config.serviceWorkerPath,
-      bundled: true
-    });
-  }
-
-  /**
-   * Returns a Promise to generate a service worker for unbundled output
-   */
-  writeUnbundledServiceWorker() {
-    return polymerBuild.addServiceWorker({
-      project: this.project,
-      buildRoot: config.build.unbundledDir,
-      swPrecacheConfig: config.swPrecacheConfig,
-      path: config.serviceWorkerPath
-    });
-  }
-
+export interface BuildOptions {
+  bundle: boolean,
+  buildServiceWorker: boolean,
+  buildDependencies: boolean
 }
 
 export class PolymerProject {
-  private _project: PolymerProjectHelper;
+
+  private _project: polymerBuild.PolymerProject;
 
   constructor(polymerJsonPath: string) {
-    this._project = new PolymerProjectHelper(polymerJsonPath);
-  }
-
-  build() {
-    const mergeTask = this._project.merge(
-      this.splitSource.bind(this),
-      this.splitDependencies.bind(this)
-    );
-    return mergeTask.call(this._project).then(() => {
-      return this._project.serviceWorker();
-    });
+    this._project = new polymerBuild.PolymerProject(polymerJsonPath);
   }
 
   /**
-   * Splits all of your source files into one big ReadableStream. Source files
-   * are those in src/** as well as anything added to the `sources` property
-   * of polymer.json. Because most HTML Imports contain inline CSS and JS,
-   * those inline resources will be split out into temporary files. You can use
-   * $.if to filter files out of the stream and run them through specific
-   * tasks.
+   * Builds all HTML files in the project, and generates
+   * a service worker
    */
-  splitSource() {
+  async build(options: BuildOptions) {
+    const stream = mergeStream(
+      this.buildSource(),
+      options.buildDependencies
+        ? this.buildDependencies()
+        : this._project.dependencies()
+    );
+
+    await this._writeOutput(stream, options.bundle);
+
+    if (options.buildServiceWorker) {
+      await this._writeServiceWorker(options.bundle);
+    }
+  }
+
+  /**
+   * Builds the HTML files from sources, specified in `sources`
+   * from polymer.json
+   */
+  buildSource() {
     return pump([
-      this._project.splitSource(),
+      this._splitSource(),
       $.debug({title: 'html:src'}),
 
       // Replace <script type="text/x-typescript"> into <script>
@@ -227,27 +86,50 @@ export class PolymerProject {
 
       $.if($.util.env.env === 'production', utils.minifyPipe()()),
 
-      this._project.rejoin(),
+      this._project.rejoinHtml(),
     ]);
   }
 
-  // TODO: Move dependencies to different task
   /**
-   * Splits all of your dependency files into one big ReadableStream.
-   * These are determined from walking your source files and from the
-   * `extraDependencies` property of polymer.json.
+   * Builds the HTML files from dependencies, specified in
+   * `extraDependencies` from polymer.json and from HTML imports
    */
-  splitDependencies() {
+  buildDependencies() {
     return pump([
-      this._project.splitDependencies(),
+      this._splitDependencies(),
       $.debug({title: 'html:dep'}),
       $.if(['**/*.js', '!**/*.min.js', '!**/dist/system*.js'], $.babel()),
       $.if($.util.env.env === 'production', utils.minifyPipe()()),
-      this._project.rejoin(),
+      this._project.rejoinHtml(),
     ]);
   }
 
-  serviceWorker() {
-    return this._project.serviceWorker();
+  private _splitSource(): NodeJS.ReadWriteStream {
+    return this._project.sources().pipe(this._project.splitHtml());
+  }
+
+  private _splitDependencies(): NodeJS.ReadWriteStream {
+    return this._project.dependencies().pipe(this._project.splitHtml());
+  }
+
+  private _writeOutput(stream: any, bundle: boolean) {
+    return new Promise(resolve => {
+      let strm = stream;
+      if (bundle) {
+        strm = stream.pipe(this._project.bundler)
+      }
+      strm.pipe(gulp.dest(config.build.unbundledDir))
+        .on('end', resolve);
+    });
+  }
+
+  private _writeServiceWorker(bundle: boolean) {
+    return polymerBuild.addServiceWorker({
+      project: this._project,
+      buildRoot: config.build.unbundledDir,
+      swPrecacheConfig: config.swPrecacheConfig,
+      path: config.serviceWorkerPath,
+      bundled: bundle
+    });
   }
 }
