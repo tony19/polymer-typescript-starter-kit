@@ -24,12 +24,12 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-import gulp from 'gulp';
-import loadPlugins from 'gulp-load-plugins';
-import pump from 'pump';
+import * as gulp from 'gulp';
+import * as loadPlugins from 'gulp-load-plugins';
+const pump = require('pump');
 import {argv as args} from 'yargs';
 
-const $ = loadPlugins();
+const $: any = loadPlugins();
 
 function licenseTask() {
   const stream = gulp.src([
@@ -61,8 +61,8 @@ function licenseTask() {
   }
 }
 
-licenseTask.description = 'Verifies license headers';
-licenseTask.flags = {
+(<any>licenseTask).description = 'Verifies license headers';
+(<any>licenseTask).flags = {
   '-w': `Update license headers if necessary`,
   '--include': `Glob patterns to include`,
   '--exclude': `Glob patterns to exclude`,
