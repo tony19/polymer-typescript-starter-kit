@@ -24,10 +24,10 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-import * as utils from '../utils';
-import {PolymerProjectHelper} from '../project';
 import * as gulp from 'gulp';
 import * as loadPlugins from 'gulp-load-plugins';
+import * as utils from '../utils';
+import {PolymerProjectHelper} from '../project';
 const pump = require('pump');
 import './htmllint';
 

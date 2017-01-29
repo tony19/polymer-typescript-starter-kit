@@ -25,9 +25,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 import * as config from '../config';
-import * as path from 'path';
 import * as gulp from 'gulp';
 import * as loadPlugins from 'gulp-load-plugins';
+import * as path from 'path';
 const pump = require('pump');
 
 import './tslint';

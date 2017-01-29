@@ -24,15 +24,15 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+import * as browserSync from 'browser-sync';
 import * as config from '../config';
+import * as gulp from 'gulp';
 import * as path from 'path';
 import * as utils from '../utils';
+import * as loadPlugins from 'gulp-load-plugins';
 import {argv as args} from 'yargs';
 import {HtmlSplitter} from '../project';
-import * as browserSync from 'browser-sync';
-import * as gulp from 'gulp';
 const historyApiFallback = require('connect-history-api-fallback');
-import * as loadPlugins from 'gulp-load-plugins';
 const pump = require('pump');
 import './html';
 import './htmllint';

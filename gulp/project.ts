@@ -33,10 +33,10 @@
  * Code distributed by Google as part of the polymer project is also
  * subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
  */
+import * as config from './config';
 import * as gulp from 'gulp';
 import * as path from 'path';
 import * as polymer from 'polymer-build';
-import * as config from './config';
 const mergeStream = require('merge-stream');
 
 export class HtmlSplitter {
