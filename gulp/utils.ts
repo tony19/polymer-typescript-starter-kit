@@ -69,13 +69,13 @@ function uglify() {
   // the user to fix the Uglify errors. Refactor later to use
   // pump for this error handling.
   const task = $.uglify();
-  task.on('error', function(err) {
+  task.on('error', function(err: any) {
     $.util.log(
       $.util.colors.cyan('[uglify]'),
       `${err.cause.filename}:${err.cause.line}:${err.cause.col}`,
       $.util.colors.red(`${err.cause.message}`)
     );
-    this.emit('end');
+    (<any>this).emit('end');
   });
   return task;
 }
