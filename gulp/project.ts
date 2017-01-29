@@ -49,7 +49,7 @@ const $: any = loadPlugins();
  * to split the source files and dependency files into streams,
  * and tasks to rejoin them and output service workers
  */
-export class PolymerProjectHelper {
+class PolymerProjectHelper {
   project: polymer.PolymerProject;
 
   constructor() {
@@ -90,9 +90,9 @@ export class PolymerProjectHelper {
    * generate the bundled and unbundled versions of the site.
    * Takes an argument for the user to specify the kind of output they want
    * either bundled or unbundled. If this argument is omitted it will output both
-   * @param source
-   * @param dependencies
-   * @returns Promise
+   * @param source source stream
+   * @param dependencies stream of dependencies
+   * @returns function that merges the two streams, and writes the build output
    */
   merge(source: Function, dependencies: Function) {
     return () => {
@@ -185,4 +185,69 @@ export class PolymerProjectHelper {
     });
   }
 
+}
+
+export class PolymerProject {
+  private _project: PolymerProjectHelper;
+
+  constructor() {
+    this._project = new PolymerProjectHelper();
+  }
+
+  build() {
+    const mergeTask = this._project.merge(
+      this.splitSource.bind(this),
+      this.splitDependencies.bind(this)
+    );
+    return mergeTask.call(this._project).then(() => {
+      return this._project.serviceWorker();
+    });
+  }
+
+  /**
+   * Splits all of your source files into one big ReadableStream. Source files
+   * are those in src/** as well as anything added to the `sources` property
+   * of polymer.json. Because most HTML Imports contain inline CSS and JS,
+   * those inline resources will be split out into temporary files. You can use
+   * $.if to filter files out of the stream and run them through specific
+   * tasks.
+   */
+  splitSource() {
+    return pump([
+      this._project.splitSource(),
+      $.debug({title: 'html:src'}),
+
+      // Replace <script type="text/x-typescript"> into <script>
+      // since the script body gets transpiled into JavaScript
+      $.if('**/*.html', $.replace(/(<script.*type=["'].*\/)x-typescript/, '$1javascript')),
+
+      $.if('**/*.css', $.sass().on('error', $.sass.logError)),
+      $.if('**/*.ts', utils.tsPipe()()),
+      $.if('**/*.js', $.babel()),
+
+      $.if($.util.env.env === 'production', utils.minifyPipe()()),
+
+      this._project.rejoin(),
+    ]);
+  }
+
+  // TODO: Move dependencies to different task
+  /**
+   * Splits all of your dependency files into one big ReadableStream.
+   * These are determined from walking your source files and from the
+   * `extraDependencies` property of polymer.json.
+   */
+  splitDependencies() {
+    return pump([
+      this._project.splitDependencies(),
+      $.debug({title: 'html:dep'}),
+      $.if(['**/*.js', '!**/*.min.js', '!**/dist/system*.js'], $.babel()),
+      $.if($.util.env.env === 'production', utils.minifyPipe()()),
+      this._project.rejoin(),
+    ]);
+  }
+
+  serviceWorker() {
+    return this._project.serviceWorker();
+  }
 }
