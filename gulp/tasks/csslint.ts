@@ -24,11 +24,11 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-import gulp from 'gulp';
-import loadPlugins from 'gulp-load-plugins';
-import pump from 'pump';
+import * as gulp from 'gulp';
+import * as loadPlugins from 'gulp-load-plugins';
+const pump = require('pump');
 
-const $ = loadPlugins();
+const $: any = loadPlugins();
 
 function csslintTask() {
   return pump([
@@ -40,5 +40,5 @@ function csslintTask() {
   ]);
 }
 
-csslintTask.description = 'Lints the CSS/SCSS files';
+(<any>csslintTask).description = 'Lints the CSS/SCSS files';
 gulp.task('csslint', csslintTask);
