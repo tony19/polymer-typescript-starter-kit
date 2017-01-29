@@ -63,8 +63,8 @@ function licenseTask() {
 
 (<any>licenseTask).description = 'Verifies license headers';
 (<any>licenseTask).flags = {
-  '-w': `Update license headers if necessary`,
-  '--include': `Glob patterns to include`,
-  '--exclude': `Glob patterns to exclude`,
+  '-w': `write license headers if necessary`,
+  '--include': `glob patterns to include`,
+  '--exclude': `glob patterns to exclude`,
 };
 gulp.task('license', licenseTask);
