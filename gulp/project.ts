@@ -35,7 +35,7 @@
  */
 import * as config from './config';
 import * as gulp from 'gulp';
-import * as polymer from 'polymer-build';
+import * as polymerBuild from 'polymer-build';
 import * as loadPlugins from 'gulp-load-plugins';
 import * as utils from './utils';
 const mergeStream = require('merge-stream');
@@ -50,11 +50,11 @@ const $: any = loadPlugins();
  * and tasks to rejoin them and output service workers
  */
 class PolymerProjectHelper {
-  project: polymer.PolymerProject;
+  project: polymerBuild.PolymerProject;
 
   constructor() {
     const polymerJson = require((<any>config).polymerJsonPath);
-    this.project = new polymer.PolymerProject(polymerJson);
+    this.project = new polymerBuild.PolymerProject(polymerJson);
   }
 
   /**
@@ -101,10 +101,10 @@ class PolymerProjectHelper {
       let outputs = [];
 
       if (bundleType === 'both' || bundleType === 'bundled') {
-        outputs.push(this.writeBundledOutput(polymer.forkStream(mergedFiles)));
+        outputs.push(this.writeBundledOutput(polymerBuild.forkStream(mergedFiles)));
       }
       if (bundleType === 'both' || bundleType === 'unbundled') {
-        outputs.push(this.writeUnbundledOutput(polymer.forkStream(mergedFiles)));
+        outputs.push(this.writeUnbundledOutput(polymerBuild.forkStream(mergedFiles)));
       }
 
       return Promise.all(outputs);
@@ -164,7 +164,7 @@ class PolymerProjectHelper {
    * Returns a Promise to generate a service worker for bundled output
    */
   writeBundledServiceWorker() {
-    return polymer.addServiceWorker({
+    return polymerBuild.addServiceWorker({
       project: this.project,
       buildRoot: (<any>config).getBundledDir(),
       swPrecacheConfig: (<any>config).swPrecacheConfig,
@@ -177,7 +177,7 @@ class PolymerProjectHelper {
    * Returns a Promise to generate a service worker for unbundled output
    */
   writeUnbundledServiceWorker() {
-    return polymer.addServiceWorker({
+    return polymerBuild.addServiceWorker({
       project: this.project,
       buildRoot: (<any>config).getUnbundledDir(),
       swPrecacheConfig: (<any>config).swPrecacheConfig,
