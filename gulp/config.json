@@ -1,0 +1,13 @@
+{
+  "build": {
+    "rootDir": "build",
+    "bundledDir": "",
+    "unbundledDir": "build/unbundled",
+    "debugDir": "build/debug",
+    "bundleType": "unbundled"
+  },
+  "serviceWorkerPath": "service-worker.js",
+  "swPrecacheConfig": {
+    "navigateFallback": "/index.html"
+  }
+}

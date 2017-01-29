@@ -25,11 +25,13 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 import * as gulp from 'gulp';
+import * as path from 'path';
 import {PolymerProject} from '../project';
 import './htmllint';
 
 const htmlTask = function html() {
-  const polymerProject = new PolymerProject();
+  const polymerJsonPath = path.join(process.cwd(), 'polymer.json');
+  const polymerProject = new PolymerProject(polymerJsonPath);
   return polymerProject.build();
 };
 

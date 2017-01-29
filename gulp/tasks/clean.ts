@@ -33,12 +33,12 @@
  * Code distributed by Google as part of the polymer project is also
  * subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
  */
-import * as config from '../config';
 import * as del from 'del';
 import * as gulp from 'gulp';
 
 function clean() {
-  return del((<any>config).build.rootDirectory);
+  const config = require('../config.json');
+  return del(config.build.rootDir);
 }
 (<any>clean).description = 'Deletes output directory and any intermediate files';
 

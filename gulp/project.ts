@@ -33,7 +33,6 @@
  * Code distributed by Google as part of the polymer project is also
  * subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
  */
-import * as config from './config';
 import * as gulp from 'gulp';
 import * as polymerBuild from 'polymer-build';
 import * as loadPlugins from 'gulp-load-plugins';
@@ -42,6 +41,7 @@ const mergeStream = require('merge-stream');
 const pump = require('pump');
 
 const $: any = loadPlugins();
+const config = require('./config.json');
 
 /**
  * This is the heart of polymer-build and exposes much of the
@@ -52,8 +52,8 @@ const $: any = loadPlugins();
 class PolymerProjectHelper {
   project: polymerBuild.PolymerProject;
 
-  constructor() {
-    const polymerJson = require((<any>config).polymerJsonPath);
+  constructor(polymerJsonPath: string) {
+    const polymerJson = require(polymerJsonPath);
     this.project = new polymerBuild.PolymerProject(polymerJson);
   }
 
@@ -97,7 +97,7 @@ class PolymerProjectHelper {
   merge(source: Function, dependencies: Function) {
     return () => {
       const mergedFiles = mergeStream(source(), dependencies());
-      const bundleType = (<any>config).build.bundleType;
+      const bundleType = config.build.bundleType;
       let outputs = [];
 
       if (bundleType === 'both' || bundleType === 'bundled') {
@@ -120,7 +120,7 @@ class PolymerProjectHelper {
   writeBundledOutput(stream: any) {
     return new Promise(resolve => {
       stream.pipe(this.project.bundler)
-        .pipe(gulp.dest((<any>config).getBundledDir()))
+        .pipe(gulp.dest(config.build.bundledDir))
         .on('end', resolve);
     });
   }
@@ -133,7 +133,7 @@ class PolymerProjectHelper {
    */
   writeUnbundledOutput(stream: any) {
     return new Promise(resolve => {
-      stream.pipe(gulp.dest((<any>config).getUnbundledDir()))
+      stream.pipe(gulp.dest(config.build.unbundledDir))
         .on('end', resolve);
     });
   }
@@ -147,7 +147,7 @@ class PolymerProjectHelper {
    * @returns Promise
    */
   serviceWorker() {
-    const bundleType = (<any>config).build.bundleType;
+    const bundleType = config.build.bundleType;
     let workers = [];
 
     if (bundleType === 'both' || bundleType === 'bundled') {
@@ -166,9 +166,9 @@ class PolymerProjectHelper {
   writeBundledServiceWorker() {
     return polymerBuild.addServiceWorker({
       project: this.project,
-      buildRoot: (<any>config).getBundledDir(),
-      swPrecacheConfig: (<any>config).swPrecacheConfig,
-      path: (<any>config).serviceWorkerPath,
+      buildRoot: config.build.bundledDir,
+      swPrecacheConfig: config.swPrecacheConfig,
+      path: config.serviceWorkerPath,
       bundled: true
     });
   }
@@ -179,9 +179,9 @@ class PolymerProjectHelper {
   writeUnbundledServiceWorker() {
     return polymerBuild.addServiceWorker({
       project: this.project,
-      buildRoot: (<any>config).getUnbundledDir(),
-      swPrecacheConfig: (<any>config).swPrecacheConfig,
-      path: (<any>config).serviceWorkerPath
+      buildRoot: config.build.unbundledDir,
+      swPrecacheConfig: config.swPrecacheConfig,
+      path: config.serviceWorkerPath
     });
   }
 
@@ -190,8 +190,8 @@ class PolymerProjectHelper {
 export class PolymerProject {
   private _project: PolymerProjectHelper;
 
-  constructor() {
-    this._project = new PolymerProjectHelper();
+  constructor(polymerJsonPath: string) {
+    this._project = new PolymerProjectHelper(polymerJsonPath);
   }
 
   build() {

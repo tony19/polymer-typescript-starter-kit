@@ -25,13 +25,13 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 import * as browserSync from 'browser-sync';
-import * as config from '../config';
 import * as gulp from 'gulp';
 import * as path from 'path';
 import * as utils from '../utils';
 import * as loadPlugins from 'gulp-load-plugins';
 import {argv as args} from 'yargs';
 import {HtmlSplitter} from '../html-splitter';
+const config = require('../config.json');
 const historyApiFallback = require('connect-history-api-fallback');
 const pump = require('pump');
 import './html';
@@ -59,7 +59,7 @@ function serve() {
     //       will present a certificate warning in the browser.
     https: args.https,
     server: {
-      baseDir: [(<any>config).getDebugDir(), (<any>config).getUnbundledDir(), '.'],
+      baseDir: [config.build.debugDir, config.build.unbundledDir, '.'],
       middleware: [historyApiFallback()]
     }
   };
@@ -104,6 +104,6 @@ function singleHtml(filename: string) {
     $.if('**/*.js', $.babel()),
     $.if($.util.env.env === 'production', utils.minifyPipe()()),
 
-    splitter.rejoin((<any>config).getDebugDir()),
+    splitter.rejoin(config.build.debugDir),
   ]);
 }

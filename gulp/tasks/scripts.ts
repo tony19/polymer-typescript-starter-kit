@@ -24,10 +24,10 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-import * as config from '../config';
 import * as gulp from 'gulp';
 import * as loadPlugins from 'gulp-load-plugins';
 import * as path from 'path';
+const config = require('../config.json');
 const pump = require('pump');
 
 import './tslint';
@@ -49,13 +49,7 @@ const scriptsTask = function scripts() {
     tsProject(),
   ]);
 
-  const build = {
-    bundledDir: (<any>config).getBundledDir(),
-    unbundledDir: (<any>config).getUnbundledDir(),
-    debugDir: (<any>config).getDebugDir(),
-  };
-
-  tsResult.dts.pipe(gulp.dest(build.debugDir));
+  tsResult.dts.pipe(gulp.dest(config.build.debugDir));
 
   const stream = pump([
     tsResult.js,
@@ -68,17 +62,17 @@ const scriptsTask = function scripts() {
         return path.relative(path.dirname(sourceFile), file.cwd);
       }
     }),
-    gulp.dest(build.debugDir),
+    gulp.dest(config.build.debugDir),
     $.if('*.js', $.uglify({
       preserveComments: 'some'
     })),
   ]);
 
-  if (build.bundledDir) {
-    stream.pipe(gulp.dest(build.bundledDir));
+  if (config.build.bundledDir) {
+    stream.pipe(gulp.dest(config.build.bundledDir));
   }
-  if (build.unbundledDir) {
-    stream.pipe(gulp.dest(build.unbundledDir));
+  if (config.build.unbundledDir) {
+    stream.pipe(gulp.dest(config.build.unbundledDir));
   }
 
   return stream;

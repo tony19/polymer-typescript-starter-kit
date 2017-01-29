@@ -24,10 +24,10 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-import * as config from './config';
 import * as gulp from 'gulp';
 import * as path from 'path';
 import * as polymer from 'polymer-build';
+const config = require('./config.json');
 
 export class HtmlSplitter {
   root?: string;
