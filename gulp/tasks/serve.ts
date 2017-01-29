@@ -81,6 +81,7 @@ function serve() {
 }
 (<any>serve).description = 'Starts development server';
 (<any>serve).flags = {
+  '--https': `enable https`,
   '--port': `starting port number (default: ${DEFAULT_PORT})`
 };
 
