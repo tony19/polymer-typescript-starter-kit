@@ -24,13 +24,13 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-import gulp from 'gulp';
-import loadPlugins from 'gulp-load-plugins';
-import pump from 'pump';
+import * as gulp from 'gulp';
+import * as loadPlugins from 'gulp-load-plugins';
+const pump = require('pump');
 
-const $ = loadPlugins();
+const $: any = loadPlugins();
 
-function htmllintReporter(filepath, issues) {
+function htmllintReporter(filepath: string, issues: any[]) {
   if (issues.length > 0) {
     for (const issue of issues) {
       $.util.log(
@@ -51,5 +51,5 @@ function htmllint() {
   ]);
 }
 
-htmllint.description = 'Lints HTML files';
+(<any>htmllint).description = 'Lints HTML files';
 gulp.task('htmllint', htmllint);
