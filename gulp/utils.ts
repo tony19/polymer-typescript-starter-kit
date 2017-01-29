@@ -24,10 +24,11 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-import lazypipe from 'lazypipe';
-import loadPlugins from 'gulp-load-plugins';
+import * as loadPlugins from 'gulp-load-plugins';
+const lazypipe = require('lazypipe');
+const pump = require('pump');
 
-const $ = loadPlugins();
+const $: any = loadPlugins();
 
 function tsPipe() {
   const tsProject = $.typescript.createProject('tsconfig.json');
