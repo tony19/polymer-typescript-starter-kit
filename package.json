@@ -20,6 +20,7 @@
     "tezt": "nyc --check-coverage -r html -r text --report-dir build/coverage ./node_modules/.bin/_mocha test/**/*.ts"
   },
   "devDependencies": {
+    "@types/browser-sync": "3001.0.28-alpha",
     "@types/chai": "^3.4.34",
     "@types/es6-shim": "^0.31.32",
     "@types/gulp": "^3.8.32",

@@ -40,11 +40,11 @@ import * as config from './config';
 const mergeStream = require('merge-stream');
 
 export class HtmlSplitter {
-  root: string;
+  root?: string;
   filename: string;
   project: polymer.PolymerProject;
 
-  constructor(root: string) {
+  constructor(root?: string) {
     if (!root) {
       const {projectRoot} = require((<any>config).polymerJsonPath);
       root = projectRoot || '.';
