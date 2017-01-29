@@ -25,17 +25,17 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 import * as config from '../config';
-import gulp from 'gulp';
-import loadPlugins from 'gulp-load-plugins';
-import pump from 'pump';
+import * as gulp from 'gulp';
+import * as loadPlugins from 'gulp-load-plugins';
+const pump = require('pump');
 
-const $ = loadPlugins();
+const $: any = loadPlugins();
 
 function stylesTask() {
   const build = {
-    bundledDir: config.getBundledDir(),
-    unbundledDir: config.getUnbundledDir(),
-    debugDir: config.getDebugDir(),
+    bundledDir: (<any>config).getBundledDir(),
+    unbundledDir: (<any>config).getUnbundledDir(),
+    debugDir: (<any>config).getDebugDir(),
   };
 
   const stream = pump([
@@ -55,5 +55,5 @@ function stylesTask() {
   return stream;
 }
 
-stylesTask.description = 'Builds the CSS';
+(<any>stylesTask).description = 'Builds the CSS';
 gulp.task('styles', ['csslint'], stylesTask);
