@@ -71,7 +71,7 @@ function serve() {
   gulp.watch('src/**/*.html', () => {/*ignore*/}).on('change', (event: any) => {
     if (event.type === 'changed') {
       const filename = event.path.replace(process.cwd() + path.sep, '');
-      const stream = singleHtml(filename);
+      const stream = buildHtml(filename);
       stream.on('finish', () => browserSync.reload());
       return stream;
     }
@@ -88,7 +88,7 @@ function serve() {
 gulp.task('serve', serve);
 
 
-function singleHtml(filename: string) {
+function buildHtml(filename: string) {
   const splitter = new HtmlSplitter();
   return pump([
     splitter.split(filename),
