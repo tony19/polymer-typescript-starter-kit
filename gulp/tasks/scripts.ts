@@ -26,12 +26,13 @@
  */
 import * as config from '../config';
 import * as path from 'path';
-import gulp from 'gulp';
-import loadPlugins from 'gulp-load-plugins';
-import pump from 'pump';
+import * as gulp from 'gulp';
+import * as loadPlugins from 'gulp-load-plugins';
+const pump = require('pump');
+
 import './tslint';
 
-const $ = loadPlugins();
+const $: any = loadPlugins();
 
 const scriptsTask = function scripts() {
   const tsProject = $.typescript.createProject('tsconfig.json', {
@@ -49,9 +50,9 @@ const scriptsTask = function scripts() {
   ]);
 
   const build = {
-    bundledDir: config.getBundledDir(),
-    unbundledDir: config.getUnbundledDir(),
-    debugDir: config.getDebugDir(),
+    bundledDir: (<any>config).getBundledDir(),
+    unbundledDir: (<any>config).getUnbundledDir(),
+    debugDir: (<any>config).getDebugDir(),
   };
 
   tsResult.dts.pipe(gulp.dest(build.debugDir));
@@ -62,7 +63,7 @@ const scriptsTask = function scripts() {
       includeContent: false,
 
       // Return relative source map root directories per file.
-      sourceRoot: file => {
+      sourceRoot: (file: any) => {
         const sourceFile = path.join(file.cwd, file.sourceMap.file);
         return path.relative(path.dirname(sourceFile), file.cwd);
       }
@@ -83,5 +84,5 @@ const scriptsTask = function scripts() {
   return stream;
 };
 
-scriptsTask.description = 'Builds all TypeScript files';
+(<any>scriptsTask).description = 'Builds all TypeScript files';
 gulp.task('scripts', ['tslint'], scriptsTask);

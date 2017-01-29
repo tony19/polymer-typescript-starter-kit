@@ -24,10 +24,10 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-import gulp from 'gulp';
-import loadPlugins from 'gulp-load-plugins';
+import * as gulp from 'gulp';
+import * as loadPlugins from 'gulp-load-plugins';
 
-const $ = loadPlugins();
+const $: any = loadPlugins();
 
 function tslint() {
   return gulp.src('{src,test}/**/*.ts')
@@ -40,5 +40,5 @@ function tslint() {
     .pipe($.tslint.report());
 }
 
-tslint.description = 'Lints TypeScript files';
+(<any>tslint).description = 'Lints TypeScript files';
 gulp.task('tslint', tslint);
