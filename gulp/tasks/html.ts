@@ -26,14 +26,16 @@
  */
 import * as utils from '../utils';
 import {PolymerProjectHelper} from '../project';
-import gulp from 'gulp';
-import loadPlugins from 'gulp-load-plugins';
-import pump from 'pump';
+import * as gulp from 'gulp';
+import * as loadPlugins from 'gulp-load-plugins';
+const pump = require('pump');
 import './htmllint';
 
-const $ = loadPlugins();
+const $: any = loadPlugins();
 
 class PolymerProject {
+  project: PolymerProjectHelper;
+
   constructor() {
     this.project = new PolymerProjectHelper();
   }
@@ -101,5 +103,5 @@ const htmlTask = function html() {
   return polymerProject.build();
 };
 
-htmlTask.description = 'Builds HTML files (and dependencies)';
+(<any>htmlTask).description = 'Builds HTML files (and dependencies)';
 gulp.task('html', ['htmllint'], htmlTask);

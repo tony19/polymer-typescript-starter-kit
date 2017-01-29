@@ -33,16 +33,20 @@
  * Code distributed by Google as part of the polymer project is also
  * subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
  */
-import gulp from 'gulp';
-import mergeStream from 'merge-stream';
+import * as gulp from 'gulp';
 import * as path from 'path';
 import * as polymer from 'polymer-build';
-import config from './config';
+import * as config from './config';
+const mergeStream = require('merge-stream');
 
 export class HtmlSplitter {
-  constructor(root) {
+  root: string;
+  filename: string;
+  project: polymer.PolymerProject;
+
+  constructor(root: string) {
     if (!root) {
-      const {projectRoot} = require(config.polymerJsonPath);
+      const {projectRoot} = require((<any>config).polymerJsonPath);
       root = projectRoot || '.';
     }
     this.root = root;
@@ -53,7 +57,7 @@ export class HtmlSplitter {
    * @param filename path to HTML file
    * @returns stream
    */
-  split(filename) {
+  split(filename: string): NodeJS.ReadWriteStream {
     const projectConfig = {
       root: this.root,
       sources: [filename],
@@ -68,7 +72,7 @@ export class HtmlSplitter {
    * @param dest path to destination directory
    * @returns stream
    */
-  rejoin(dest) {
+  rejoin(dest: string): NodeJS.ReadWriteStream {
     const stream = this.project.rejoinHtml();
     // FIXME: polymer-build's bundler is broken
     // https://github.com/Polymer/polymer-build/issues/110
@@ -85,9 +89,10 @@ export class HtmlSplitter {
  * and tasks to rejoin them and output service workers
  */
 export class PolymerProjectHelper {
+  project: polymer.PolymerProject;
 
   constructor() {
-    const polymerJson = require(config.polymerJsonPath);
+    const polymerJson = require((<any>config).polymerJsonPath);
     this.project = new polymer.PolymerProject(polymerJson);
   }
 
@@ -97,7 +102,7 @@ export class PolymerProjectHelper {
    * added to the sourceGlobs property of polymer.json.
    * @returns {Transform}
    */
-  splitSource() {
+  splitSource(): NodeJS.ReadWriteStream {
     return this.project.sources().pipe(this.project.splitHtml());
   }
 
@@ -106,7 +111,7 @@ export class PolymerProjectHelper {
    * Dependency files are those in bower_components.
    * @returns {Transform}
    */
-  splitDependencies() {
+  splitDependencies(): NodeJS.ReadWriteStream {
     return this.project.dependencies().pipe(this.project.splitHtml());
   }
 
@@ -114,7 +119,7 @@ export class PolymerProjectHelper {
    * Returns a WriteableStream to rejoin all split files
    * @returns {Transform}
    */
-  rejoin() {
+  rejoin(): NodeJS.ReadWriteStream {
     return this.project.rejoinHtml();
   }
 
@@ -128,10 +133,10 @@ export class PolymerProjectHelper {
    * @param dependencies
    * @returns Promise
    */
-  merge(source, dependencies) {
-    return function output() {
+  merge(source: Function, dependencies: Function) {
+    return () => {
       const mergedFiles = mergeStream(source(), dependencies());
-      const bundleType = config.build.bundleType;
+      const bundleType = (<any>config).build.bundleType;
       let outputs = [];
 
       if (bundleType === 'both' || bundleType === 'bundled') {
@@ -151,10 +156,10 @@ export class PolymerProjectHelper {
    * @param stream
    * @returns Promise
    */
-  writeBundledOutput(stream) {
+  writeBundledOutput(stream: any) {
     return new Promise(resolve => {
       stream.pipe(this.project.bundler)
-        .pipe(gulp.dest(config.getBundledDir()))
+        .pipe(gulp.dest((<any>config).getBundledDir()))
         .on('end', resolve);
     });
   }
@@ -165,9 +170,9 @@ export class PolymerProjectHelper {
    * @param stream
    * @returns Promise
    */
-  writeUnbundledOutput(stream) {
+  writeUnbundledOutput(stream: any) {
     return new Promise(resolve => {
-      stream.pipe(gulp.dest(config.getUnbundledDir()))
+      stream.pipe(gulp.dest((<any>config).getUnbundledDir()))
         .on('end', resolve);
     });
   }
@@ -181,7 +186,7 @@ export class PolymerProjectHelper {
    * @returns Promise
    */
   serviceWorker() {
-    const bundleType = config.build.bundleType;
+    const bundleType = (<any>config).build.bundleType;
     let workers = [];
 
     if (bundleType === 'both' || bundleType === 'bundled') {
@@ -200,9 +205,9 @@ export class PolymerProjectHelper {
   writeBundledServiceWorker() {
     return polymer.addServiceWorker({
       project: this.project,
-      buildRoot: config.getBundledDir(),
-      swPrecacheConfig: config.swPrecacheConfig,
-      path: config.serviceWorkerPath,
+      buildRoot: (<any>config).getBundledDir(),
+      swPrecacheConfig: (<any>config).swPrecacheConfig,
+      path: (<any>config).serviceWorkerPath,
       bundled: true
     });
   }
@@ -213,9 +218,9 @@ export class PolymerProjectHelper {
   writeUnbundledServiceWorker() {
     return polymer.addServiceWorker({
       project: this.project,
-      buildRoot: config.getUnbundledDir(),
-      swPrecacheConfig: config.swPrecacheConfig,
-      path: config.serviceWorkerPath
+      buildRoot: (<any>config).getUnbundledDir(),
+      swPrecacheConfig: (<any>config).swPrecacheConfig,
+      path: (<any>config).serviceWorkerPath
     });
   }
 

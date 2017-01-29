@@ -26,11 +26,10 @@
  */
 import * as loadPlugins from 'gulp-load-plugins';
 const lazypipe = require('lazypipe');
-const pump = require('pump');
 
 const $: any = loadPlugins();
 
-function tsPipe() {
+export function tsPipe() {
   const tsProject = $.typescript.createProject('tsconfig.json');
   return lazypipe()
     .pipe(tsProject)
@@ -45,7 +44,7 @@ function tsPipe() {
     .pipe(() => $.if('**/*html_script_*.js', $.extReplace('.ts')));
 }
 
-function minifyPipe() {
+export function minifyPipe() {
   return lazypipe()
     .pipe($.debug, {title: 'minify'})
     .pipe($.plumber)
@@ -59,7 +58,7 @@ function minifyPipe() {
     .pipe($.plumber.stop);
 }
 
-function uglify() {
+export function uglify() {
   // FIXME: Using $.uglify.on('error') causes build to hang
   // on error events, and this message appears:
   //   "Did you forget to signal async completion?"
@@ -75,13 +74,7 @@ function uglify() {
       `${err.cause.filename}:${err.cause.line}:${err.cause.col}`,
       $.util.colors.red(`${err.cause.message}`)
     );
-    (<any>this).emit('end');
+    this.emit('end');
   });
   return task;
 }
-
-module.exports = {
-  uglify,
-  minifyPipe,
-  tsPipe
-};
