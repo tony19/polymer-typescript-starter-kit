@@ -50,5 +50,5 @@ function stylesTask() {
   return stream;
 }
 
-(<any>stylesTask).description = 'Builds the CSS';
+(<any>stylesTask).description = 'Builds the CSS/SCSS files';
 gulp.task('styles', ['csslint'], stylesTask);

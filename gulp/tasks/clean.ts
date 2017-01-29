@@ -40,6 +40,6 @@ function clean() {
   const config = require('../config.json');
   return del(config.build.rootDir);
 }
-(<any>clean).description = 'Deletes output directory and any intermediate files';
 
+(<any>clean).description = 'Deletes output directory and any intermediate files';
 gulp.task('clean', clean);
