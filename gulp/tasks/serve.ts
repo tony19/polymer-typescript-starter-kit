@@ -27,13 +27,14 @@
 import * as browserSync from 'browser-sync';
 import * as gulp from 'gulp';
 import * as path from 'path';
-import {PolymerProject} from "../project";
+import {PolymerProject} from '../project';
 import {argv as args} from 'yargs';
-const config = require('../config.json');
-const historyApiFallback = require('connect-history-api-fallback');
 import './html';
 import './htmllint';
 import './scripts';
+
+const config = require('../config.json');
+const historyApiFallback = require('connect-history-api-fallback');
 
 const DEFAULT_PORT = 8000;
 
