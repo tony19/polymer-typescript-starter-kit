@@ -143,7 +143,7 @@ export class PolymerProject {
     $.if('**/*.html', $.replace(/(<script.*type=["'].*\/)x-typescript/, '$1javascript')),
 
     $.if('**/*.css', $.sass().on('error', $.sass.logError)),
-    $.if('**/*.ts', utils.tsPipe()()),
+    $.if('**/*.ts', utils.tsLazyPipe()()),
     $.if('**/*.js', $.babel()),
   ];
 

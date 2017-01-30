@@ -29,7 +29,7 @@ const lazypipe = require('lazypipe');
 
 const $: any = loadPlugins();
 
-export function tsPipe() {
+export function tsLazyPipe() {
   const tsProject = $.typescript.createProject('tsconfig.json');
   return lazypipe()
     .pipe(tsProject)
@@ -44,7 +44,7 @@ export function tsPipe() {
     .pipe(() => $.if('**/*html_script_*.js', $.extReplace('.ts')));
 }
 
-export function uglify() {
+export function uglifyPipe() {
   // FIXME: Using $.uglify.on('error') causes build to hang
   // on error events, and this message appears:
   //   "Did you forget to signal async completion?"
