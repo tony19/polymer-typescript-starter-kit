@@ -67,7 +67,7 @@ export function uglifyPipe() {
 
 /* The following pipes are arrays because they're passed to pump. */
 
-export const htmlPipe = [
+export const htmlPipe = () => [
   // Replace <script type="text/x-typescript"> into <script>
   // since the script body gets transpiled into JavaScript
   $.if('**/*.html', $.replace(/(<script.*type=["'].*\/)x-typescript/, '$1javascript')),
@@ -77,7 +77,7 @@ export const htmlPipe = [
   $.if('**/*.js', $.babel()),
 ];
 
-export const minifyPipe = [
+export const minifyPipe = () => [
   $.debug({title: 'minify'}),
   $.plumber(),
   $.if('**/*.css', $.cleanCss()),

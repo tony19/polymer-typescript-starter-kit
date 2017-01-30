@@ -55,8 +55,8 @@ export class PolymerProject {
       splitter.split(filename),
       $.debug({title: 'html'}),
       $.if('**/*.html', $.htmllint()),
-      ...pipes.htmlPipe,
-      ...($.util.env.env === 'production' ? pipes.minifyPipe : []),
+      ...pipes.htmlPipe(),
+      ...($.util.env.env === 'production' ? pipes.minifyPipe() : []),
       splitter.rejoin(config.build.debugDir),
     ]);
   }
@@ -88,8 +88,8 @@ export class PolymerProject {
     return pump([
       this._splitSource(),
       $.debug({title: 'html:src'}),
-      ...pipes.htmlPipe,
-      ...($.util.env.env === 'production' ? pipes.minifyPipe : []),
+      ...pipes.htmlPipe(),
+      ...($.util.env.env === 'production' ? pipes.minifyPipe() : []),
       this._project.rejoinHtml(),
     ]);
   }
@@ -103,7 +103,7 @@ export class PolymerProject {
       this._splitDependencies(),
       $.debug({title: 'html:dep'}),
       $.if(['**/*.js', '!**/*.min.js', '!**/dist/system*.js'], $.babel()),
-      ...($.util.env.env === 'production' ? pipes.minifyPipe : []),
+      ...($.util.env.env === 'production' ? pipes.minifyPipe() : []),
       this._project.rejoinHtml(),
     ]);
   }
