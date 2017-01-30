@@ -27,7 +27,6 @@
 import * as gulp from 'gulp';
 import * as path from 'path';
 import * as polymer from 'polymer-build';
-const config = require('./config.json');
 
 export class HtmlSplitter {
   root?: string;
@@ -35,11 +34,7 @@ export class HtmlSplitter {
   project: polymer.PolymerProject;
 
   constructor(root?: string) {
-    if (!root) {
-      const {projectRoot} = require((<any>config).polymerJsonPath);
-      root = projectRoot || '.';
-    }
-    this.root = root;
+    this.root = root || '.';
   }
 
   /**

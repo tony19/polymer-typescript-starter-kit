@@ -39,6 +39,7 @@ const DEFAULT_PORT = 8000;
 
 function serve() {
   const port = args.port || DEFAULT_PORT;
+  const {projectRoot} = require(path.join(process.cwd(), 'polymer.json'));
 
   const options: browserSync.Options = {
     logPrefix: 'PSK',
@@ -67,7 +68,7 @@ function serve() {
   gulp.watch('src/**/*.html', () => {/*ignore*/}).on('change', (event: any) => {
     if (event.type === 'changed') {
       const filename = event.path.replace(process.cwd() + path.sep, '');
-      const stream = PolymerProject.buildHtmlFile(filename);
+      const stream = PolymerProject.buildHtmlFile(projectRoot, filename);
       stream.on('finish', () => browserSync.reload());
       return stream;
     }

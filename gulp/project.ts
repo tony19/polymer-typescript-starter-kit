@@ -49,8 +49,8 @@ export class PolymerProject {
     this._project = new polymerBuild.PolymerProject(polymerJsonPath);
   }
 
-  static buildHtmlFile(filename: string) {
-    const splitter = new HtmlSplitter();
+  static buildHtmlFile(projectRoot: string, filename: string) {
+    const splitter = new HtmlSplitter(projectRoot);
     return pump([
       splitter.split(filename),
       $.debug({title: 'html'}),
