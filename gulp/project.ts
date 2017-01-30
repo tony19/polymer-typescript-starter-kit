@@ -88,17 +88,7 @@ export class PolymerProject {
     return pump([
       this._splitSource(),
       $.debug({title: 'html:src'}),
-
-      // Replace <script type="text/x-typescript"> into <script>
-      // since the script body gets transpiled into JavaScript
-      $.if('**/*.html', $.replace(/(<script.*type=["'].*\/)x-typescript/, '$1javascript')),
-
-      $.if('**/*.css', $.sass().on('error', $.sass.logError)),
-      $.if('**/*.ts', utils.tsPipe()()),
-      $.if('**/*.js', $.babel()),
-
-      $.if($.util.env.env === 'production', utils.minifyPipe()()),
-
+      ...PolymerProject.htmlPipe,
       this._project.rejoinHtml(),
     ]);
   }
