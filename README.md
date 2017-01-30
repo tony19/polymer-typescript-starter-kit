@@ -62,20 +62,38 @@ yarn start
 ```
 
 
-### Useful Gulp tasks
+### Gulp tasks
 
 ```shell
-Usage
-  gulp [TASK] [OPTIONS...]
-
-Available tasks
-  build         Clean builds project (dest: build/[un]bundled)
-  clean         Cleans output directory
-  csslint       Lints CSS files
-  html          Builds HTML files and dependencies
-  htmllint      Lints HTML files
-  scripts       Builds TypeScript files
-  serve         Starts development server (use `--port` to change port)
-  styles        Builds CSS/Sass files
-  tslint        Lints TypeScript files
+Tasks for ./polymer-typescript-starter-kit/gulpfile.ts
+├─┬ build
+│ ├─┬ scripts
+│ │ └── tslint
+│ ├─┬ styles
+│ │ └── csslint
+│ ├─┬ html
+│ │ └── htmllint
+│ └── images
+├── clean      Deletes output directory and any intermediate files
+├── csslint    Lints the CSS/SCSS files
+├── default
+├─┬ html       Builds HTML files (and dependencies)
+│ │ --bundle   …bundle output
+│ │ --deps     …build dependencies
+│ │ --sw       …generate service worker
+│ └── htmllint
+├── htmllint   Lints HTML files
+├── images     Optimizes images
+├── license    Verifies license headers
+│   --exclude  …glob patterns to exclude
+│   --include  …glob patterns to include
+│   -w         …write license headers if necessary
+├─┬ scripts    Builds all TypeScript files
+│ └── tslint
+├── serve      Starts development server
+│   --https    …enable https
+│   --port     …starting port number (default: 8080)
+├─┬ styles     Builds the CSS/SCSS files
+│ └── csslint
+└── tslint     Lints TypeScript files
 ```
