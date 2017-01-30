@@ -55,8 +55,8 @@ export class PolymerProject {
       splitter.split(filename),
       $.debug({title: 'html'}),
       $.if('**/*.html', $.htmllint()),
-      ...PolymerProject.htmlPipe,
-      ...($.util.env.env === 'production' ? PolymerProject.minifyPipe : []),
+      ...utils.htmlPipe,
+      ...($.util.env.env === 'production' ? utils.minifyPipe : []),
       splitter.rejoin(config.build.debugDir),
     ]);
   }
@@ -88,8 +88,8 @@ export class PolymerProject {
     return pump([
       this._splitSource(),
       $.debug({title: 'html:src'}),
-      ...PolymerProject.htmlPipe,
-      ...($.util.env.env === 'production' ? PolymerProject.minifyPipe : []),
+      ...utils.htmlPipe,
+      ...($.util.env.env === 'production' ? utils.minifyPipe : []),
       this._project.rejoinHtml(),
     ]);
   }
@@ -103,7 +103,7 @@ export class PolymerProject {
       this._splitDependencies(),
       $.debug({title: 'html:dep'}),
       $.if(['**/*.js', '!**/*.min.js', '!**/dist/system*.js'], $.babel()),
-      ...($.util.env.env === 'production' ? PolymerProject.minifyPipe : []),
+      ...($.util.env.env === 'production' ? utils.minifyPipe : []),
       this._project.rejoinHtml(),
     ]);
   }
@@ -136,27 +136,4 @@ export class PolymerProject {
       bundled: bundle
     });
   }
-
-  private static htmlPipe = [
-    // Replace <script type="text/x-typescript"> into <script>
-    // since the script body gets transpiled into JavaScript
-    $.if('**/*.html', $.replace(/(<script.*type=["'].*\/)x-typescript/, '$1javascript')),
-
-    $.if('**/*.css', $.sass().on('error', $.sass.logError)),
-    $.if('**/*.ts', utils.tsLazyPipe()()),
-    $.if('**/*.js', $.babel()),
-  ];
-
-  private static minifyPipe = [
-    $.debug({title: 'minify'}),
-    $.plumber(),
-    $.if('**/*.css', $.cleanCss()),
-    $.if('**/*.html', $.htmlmin({
-      collapseWhitespace: true,
-      removeComments: true,
-      minifyCSS: true
-    })),
-    $.if(['**/*.js', '!**/*.min.js'], $.uglify()),
-    $.plumber.stop(),
-  ];
 }

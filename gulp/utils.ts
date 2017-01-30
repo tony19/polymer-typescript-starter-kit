@@ -64,3 +64,28 @@ export function uglifyPipe() {
   });
   return task;
 }
+
+/* The following pipes are arrays because they're passed to pump. */
+
+export const htmlPipe = [
+  // Replace <script type="text/x-typescript"> into <script>
+  // since the script body gets transpiled into JavaScript
+  $.if('**/*.html', $.replace(/(<script.*type=["'].*\/)x-typescript/, '$1javascript')),
+
+  $.if('**/*.css', $.sass().on('error', $.sass.logError)),
+  $.if('**/*.ts', tsLazyPipe()()),
+  $.if('**/*.js', $.babel()),
+];
+
+export const minifyPipe = [
+  $.debug({title: 'minify'}),
+  $.plumber(),
+  $.if('**/*.css', $.cleanCss()),
+  $.if('**/*.html', $.htmlmin({
+    collapseWhitespace: true,
+    removeComments: true,
+    minifyCSS: true
+  })),
+  $.if(['**/*.js', '!**/*.min.js'], uglifyPipe()),
+  $.plumber.stop(),
+];
