@@ -44,20 +44,6 @@ export function tsPipe() {
     .pipe(() => $.if('**/*html_script_*.js', $.extReplace('.ts')));
 }
 
-export function minifyPipe() {
-  return lazypipe()
-    .pipe($.debug, {title: 'minify'})
-    .pipe($.plumber)
-    .pipe($.if, '**/*.css', $.cleanCss())
-    .pipe($.if, '**/*.html', $.htmlmin({
-      collapseWhitespace: true,
-      removeComments: true,
-      minifyCSS: true
-    }))
-    .pipe($.if, ['**/*.js', '!**/*.min.js'], uglify())
-    .pipe($.plumber.stop);
-}
-
 export function uglify() {
   // FIXME: Using $.uglify.on('error') causes build to hang
   // on error events, and this message appears:

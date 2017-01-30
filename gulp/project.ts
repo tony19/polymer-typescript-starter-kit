@@ -89,6 +89,7 @@ export class PolymerProject {
       this._splitSource(),
       $.debug({title: 'html:src'}),
       ...PolymerProject.htmlPipe,
+      ...($.util.env.env === 'production' ? PolymerProject.minifyPipe : []),
       this._project.rejoinHtml(),
     ]);
   }
@@ -102,7 +103,7 @@ export class PolymerProject {
       this._splitDependencies(),
       $.debug({title: 'html:dep'}),
       $.if(['**/*.js', '!**/*.min.js', '!**/dist/system*.js'], $.babel()),
-      $.if($.util.env.env === 'production', utils.minifyPipe()()),
+      ...($.util.env.env === 'production' ? PolymerProject.minifyPipe : []),
       this._project.rejoinHtml(),
     ]);
   }
@@ -144,5 +145,18 @@ export class PolymerProject {
     $.if('**/*.css', $.sass().on('error', $.sass.logError)),
     $.if('**/*.ts', utils.tsPipe()()),
     $.if('**/*.js', $.babel()),
+  ];
+
+  private static minifyPipe = [
+    $.debug({title: 'minify'}),
+    $.plumber(),
+    $.if('**/*.css', $.cleanCss()),
+    $.if('**/*.html', $.htmlmin({
+      collapseWhitespace: true,
+      removeComments: true,
+      minifyCSS: true
+    })),
+    $.if(['**/*.js', '!**/*.min.js'], $.uglify()),
+    $.plumber.stop(),
   ];
 }
