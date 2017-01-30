@@ -36,7 +36,7 @@ import './scripts';
 const config = require('../config.json');
 const historyApiFallback = require('connect-history-api-fallback');
 
-const DEFAULT_PORT = 8000;
+const DEFAULT_PORT = 8080;
 
 function serve() {
   const port = args.port || DEFAULT_PORT;
