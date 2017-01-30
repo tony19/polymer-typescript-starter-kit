@@ -27,12 +27,12 @@
 import * as gulp from 'gulp';
 import * as polymerBuild from 'polymer-build';
 import * as loadPlugins from 'gulp-load-plugins';
-import * as utils from './utils';
+import * as pipes from './pipes';
 import {HtmlSplitter} from "./html-splitter";
 
 const $: any = loadPlugins();
-const mergeStream = require('merge-stream');
 const config = require('./config.json');
+const mergeStream = require('merge-stream');
 const pump = require('pump');
 
 export interface BuildOptions {
@@ -55,8 +55,8 @@ export class PolymerProject {
       splitter.split(filename),
       $.debug({title: 'html'}),
       $.if('**/*.html', $.htmllint()),
-      ...utils.htmlPipe,
-      ...($.util.env.env === 'production' ? utils.minifyPipe : []),
+      ...pipes.htmlPipe,
+      ...($.util.env.env === 'production' ? pipes.minifyPipe : []),
       splitter.rejoin(config.build.debugDir),
     ]);
   }
@@ -88,8 +88,8 @@ export class PolymerProject {
     return pump([
       this._splitSource(),
       $.debug({title: 'html:src'}),
-      ...utils.htmlPipe,
-      ...($.util.env.env === 'production' ? utils.minifyPipe : []),
+      ...pipes.htmlPipe,
+      ...($.util.env.env === 'production' ? pipes.minifyPipe : []),
       this._project.rejoinHtml(),
     ]);
   }
@@ -103,7 +103,7 @@ export class PolymerProject {
       this._splitDependencies(),
       $.debug({title: 'html:dep'}),
       $.if(['**/*.js', '!**/*.min.js', '!**/dist/system*.js'], $.babel()),
-      ...($.util.env.env === 'production' ? utils.minifyPipe : []),
+      ...($.util.env.env === 'production' ? pipes.minifyPipe : []),
       this._project.rejoinHtml(),
     ]);
   }
