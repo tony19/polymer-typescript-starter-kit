@@ -13,12 +13,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <dom-module id="my-view3">
   <template>
-    <style include="shared-styles">
-      :host {
-        display: block;
-        padding: 10px;
-      }
-    </style>
+    <link rel="stylesheet" href="my-view3.css">
+    <style include="shared-styles"></style>
 
     <div class="card">
       <div class="circle">3</div>
@@ -28,12 +24,5 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </div>
   </template>
 
-  <script type="text/x-typescript">
-    @component('my-view3')
-    class MyView3 extends polymer.Base {
-      @property()
-      title = 'View Three';
-    }
-    MyView3.register();
-  </script>
+  <script>System.import('components/my-view3/my-view3');</script>
 </dom-module>

@@ -24,17 +24,9 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-:host {
-  display: block;
-  padding: 10px;
+@component('my-view3')
+class MyView3 extends polymer.Base {
+  @property()
+  title = 'View Three';
 }
-
-$color: #4285f4;
-
-h1 {
-  color: lighten($color, 20%);
-
-  &:hover {
-    color: $color;
-  }
-}
+MyView3.register();

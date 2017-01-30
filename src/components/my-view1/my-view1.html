@@ -13,10 +13,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <dom-module id="my-view1">
   <template>
-    <style include="shared-styles">
-      /* Sass transpiles and inlines this file here */
-      @import 'my-view1.scss';
-    </style>
+    <link rel="stylesheet" href="my-view1.css">
+    <style include="shared-styles"></style>
 
     <div class="card">
       <div class="circle">1</div>
@@ -27,15 +25,4 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   </template>
 
   <script>System.import('components/my-view1/my-view1');</script>
-
-  <script type="text/x-typescript">
-  (async() => {
-    class Foo {
-      async say(msg: string) {
-        console.debug(msg);
-      }
-    }
-    await new Foo().say('hello');
-  })();
-  </script>
 </dom-module>

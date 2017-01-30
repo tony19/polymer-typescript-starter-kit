@@ -28,13 +28,3 @@
   display: block;
   padding: 10px;
 }
-
-$color: #4285f4;
-
-h1 {
-  color: lighten($color, 20%);
-
-  &:hover {
-    color: $color;
-  }
-}
