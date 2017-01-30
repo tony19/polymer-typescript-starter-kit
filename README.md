@@ -65,35 +65,31 @@ yarn start
 ### Gulp tasks
 
 ```shell
-Tasks for ./polymer-typescript-starter-kit/gulpfile.ts
-├─┬ build
-│ ├─┬ scripts
-│ │ └── tslint
-│ ├─┬ styles
-│ │ └── csslint
-│ ├─┬ html
-│ │ └── htmllint
-│ └── images
-├── clean      Deletes output directory and any intermediate files
-├── csslint    Lints the CSS/SCSS files
-├── default
-├─┬ html       Builds HTML files (and dependencies)
-│ │ --bundle   …bundle output
-│ │ --deps     …build dependencies
-│ │ --sw       …generate service worker
-│ └── htmllint
-├── htmllint   Lints HTML files
-├── images     Optimizes images
-├── license    Verifies license headers
-│   --exclude  …glob patterns to exclude
-│   --include  …glob patterns to include
-│   -w         …write license headers if necessary
-├─┬ scripts    Builds all TypeScript files
-│ └── tslint
-├── serve      Starts development server
-│   --https    …enable https
-│   --port     …starting port number (default: 8080)
-├─┬ styles     Builds the CSS/SCSS files
-│ └── csslint
-└── tslint     Lints TypeScript files
+build         Builds HTML, styles, and scripts
+clean         Deletes output directory and any intermediate files
+csslint       Lints the CSS/SCSS files
+html          Builds HTML files (and dependencies)
+ --bundle      …bundle output
+ --deps        …build dependencies
+ --sw          …generate service worker
+htmllint      Lints HTML files
+images        Optimizes images
+license       Verifies license headers
+ --exclude     …glob patterns to exclude
+ --include     …glob patterns to include
+ -w            …write license headers if necessary
+scripts       Builds all TypeScript files
+serve         Starts development server
+ --https       …enable https
+ --port        …starting port number (default: 8080)
+styles        Builds the CSS/SCSS files
+tslint        Lints TypeScript files
+```
+
+### Yarn scripts
+```
+build         Builds (runs `gulp`)
+start         Starts development server (runs `gulp serve`)
+test          Builds and then runs web-component unit tests
+tezt          Run non-web-component tests with code coverage
 ```
