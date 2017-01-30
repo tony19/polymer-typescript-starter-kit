@@ -28,11 +28,12 @@ import * as gulp from 'gulp';
 import * as polymerBuild from 'polymer-build';
 import * as loadPlugins from 'gulp-load-plugins';
 import * as utils from './utils';
-const mergeStream = require('merge-stream');
-const pump = require('pump');
+import {HtmlSplitter} from "./html-splitter";
 
 const $: any = loadPlugins();
+const mergeStream = require('merge-stream');
 const config = require('./config.json');
+const pump = require('pump');
 
 export interface BuildOptions {
   bundle: boolean,
@@ -46,6 +47,18 @@ export class PolymerProject {
 
   constructor(polymerJsonPath: string) {
     this._project = new polymerBuild.PolymerProject(polymerJsonPath);
+  }
+
+  static buildHtmlFile(filename: string) {
+    const splitter = new HtmlSplitter();
+    return pump([
+      splitter.split(filename),
+      $.debug({title: 'html'}),
+      $.if('**/*.html', $.htmllint()),
+      ...PolymerProject.htmlPipe,
+      ...($.util.env.env === 'production' ? PolymerProject.minifyPipe : []),
+      splitter.rejoin(config.build.debugDir),
+    ]);
   }
 
   /**
@@ -132,4 +145,14 @@ export class PolymerProject {
       bundled: bundle
     });
   }
+
+  private static htmlPipe = [
+    // Replace <script type="text/x-typescript"> into <script>
+    // since the script body gets transpiled into JavaScript
+    $.if('**/*.html', $.replace(/(<script.*type=["'].*\/)x-typescript/, '$1javascript')),
+
+    $.if('**/*.css', $.sass().on('error', $.sass.logError)),
+    $.if('**/*.ts', utils.tsPipe()()),
+    $.if('**/*.js', $.babel()),
+  ];
 }

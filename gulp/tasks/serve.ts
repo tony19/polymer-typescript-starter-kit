@@ -27,18 +27,14 @@
 import * as browserSync from 'browser-sync';
 import * as gulp from 'gulp';
 import * as path from 'path';
-import * as utils from '../utils';
-import * as loadPlugins from 'gulp-load-plugins';
+import {PolymerProject} from "../project";
 import {argv as args} from 'yargs';
-import {HtmlSplitter} from '../html-splitter';
 const config = require('../config.json');
 const historyApiFallback = require('connect-history-api-fallback');
-const pump = require('pump');
 import './html';
 import './htmllint';
 import './scripts';
 
-const $: any = loadPlugins();
 const DEFAULT_PORT = 8000;
 
 function serve() {
@@ -71,7 +67,7 @@ function serve() {
   gulp.watch('src/**/*.html', () => {/*ignore*/}).on('change', (event: any) => {
     if (event.type === 'changed') {
       const filename = event.path.replace(process.cwd() + path.sep, '');
-      const stream = buildHtml(filename);
+      const stream = PolymerProject.buildHtmlFile(filename);
       stream.on('finish', () => browserSync.reload());
       return stream;
     }
@@ -79,31 +75,10 @@ function serve() {
   gulp.watch('src/**/*.{js,ts}', ['scripts', () => browserSync.reload()]);
   gulp.watch('src/**/*.{css,sass,scss}', ['styles', () => browserSync.reload()]);
 }
+
 (<any>serve).description = 'Starts development server';
 (<any>serve).flags = {
   '--https': `enable https`,
   '--port': `starting port number (default: ${DEFAULT_PORT})`
 };
-
 gulp.task('serve', serve);
-
-
-function buildHtml(filename: string) {
-  const splitter = new HtmlSplitter();
-  return pump([
-    splitter.split(filename),
-    $.debug({title: 'html:reload'}),
-
-    // Replace <script type="text/x-typescript"> into <script>
-    // since the script body gets transpiled into JavaScript
-    $.if('**/*.html', $.replace(/(<script.*type=["'].*\/)x-typescript/, '$1javascript')),
-
-    $.if('**/*.css', $.sass().on('error', $.sass.logError)),
-    $.if('**/*.html', $.htmllint()),
-    $.if('**/*.ts', utils.tsPipe()()),
-    $.if('**/*.js', $.babel()),
-    $.if($.util.env.env === 'production', utils.minifyPipe()()),
-
-    splitter.rejoin(config.build.debugDir),
-  ]);
-}
