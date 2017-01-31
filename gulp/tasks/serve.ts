@@ -66,7 +66,7 @@ function serve() {
   }
   browserSync(options);
 
-  gulp.watch('src/**/*.html', () => {/*ignore*/}).on('change', (event: any) => {
+  gulp.watch(['index.html', 'src/**/*.html'], () => {/*ignore*/}).on('change', (event: any) => {
     if (event.type === 'changed') {
       const filename = event.path.replace(process.cwd() + path.sep, '');
       const stream = PolymerProject.buildHtmlFile(projectRoot, filename);
