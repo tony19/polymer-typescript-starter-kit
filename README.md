@@ -1,6 +1,6 @@
 # Polymer TypeScript Starter Kit
 
-[![Build Status](https://travis-ci.org/tony19/polymer-typescript-starter-kit.svg?branch=master)](https://travis-ci.org/tony19/polymer-typescript-starter-kit)
+[![Travis Build Status](https://travis-ci.org/tony19/polymer-typescript-starter-kit.svg?branch=master)](https://travis-ci.org/tony19/polymer-typescript-starter-kit) [![Appveyor Build status](https://ci.appveyor.com/api/projects/status/cmo1qqw1lix5jaic/branch/master?svg=true)](https://ci.appveyor.com/project/tony19/polymer-typescript-starter-kit/branch/master)
 
 > Polymer Starter Kit w/TypeScript support
 
