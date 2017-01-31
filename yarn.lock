@@ -175,13 +175,17 @@
   version "4.0.27-alpha"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-4.0.27-alpha.tgz#382e02d2a6f69bf641df015658f8933c4048837b"
 
-"@types/node@4.0.30", "@types/node@^4.0.30":
+"@types/node@4.0.30":
   version "4.0.30"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-4.0.30.tgz#553f490ed3030311620f88003e7abfc0edcb301e"
 
 "@types/node@6.0.*", "@types/node@^6.0.0", "@types/node@^6.0.31", "@types/node@^6.0.41":
   version "6.0.62"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-6.0.62.tgz#85222c077b54f25b57417bb708b9f877bda37f89"
+
+"@types/node@^4.0.30":
+  version "4.2.1"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-4.2.1.tgz#07b6a3380afa1a31fada30137abe8ad1e27b0a4f"
 
 "@types/opn@^3.0.28":
   version "3.0.28"
@@ -3978,7 +3982,7 @@ html-comment-regex@^1.1.0:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/html-comment-regex/-/html-comment-regex-1.1.1.tgz#668b93776eaae55ebde8f3ad464b307a4963625e"
 
-html-minifier@^3.0.1, html-minifier@^3.0.3, html-minifier@^3.3.0:
+html-minifier@^3.0.1, html-minifier@^3.0.3, html-minifier@^3.2.3:
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/html-minifier/-/html-minifier-3.3.0.tgz#a9b5b8eda501362d4c5699db02a8dc72013d1fab"
   dependencies:
