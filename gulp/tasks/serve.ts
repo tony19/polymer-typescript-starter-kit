@@ -57,7 +57,7 @@ function serve() {
     //       will present a certificate warning in the browser.
     https: args.https,
     server: {
-      baseDir: [config.build.debugDir, config.build.unbundledDir, '.'],
+      baseDir: [config.build.debugDir, config.build.distDir, '.'],
       middleware: [historyApiFallback()]
     }
   };

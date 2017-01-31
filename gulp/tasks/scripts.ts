@@ -63,12 +63,15 @@ const scriptsTask = function scripts() {
       }
     }),
     gulp.dest(config.build.debugDir),
+
+    // TODO: Minify only if env===production
     $.if('*.js', $.uglify({
       preserveComments: 'some'
     })),
   ]);
 
-  stream.pipe(gulp.dest(config.build.unbundledDir));
+  // TODO: Exclude test/**/*.js from dist
+  stream.pipe(gulp.dest(config.build.distDir));
   return stream;
 };
 

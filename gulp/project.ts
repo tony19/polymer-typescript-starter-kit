@@ -122,7 +122,7 @@ export class PolymerProject {
       if (bundle) {
         strm = stream.pipe(this._project.bundler)
       }
-      strm.pipe(gulp.dest(config.build.unbundledDir))
+      strm.pipe(gulp.dest(config.build.distDir))
         .on('end', resolve);
     });
   }
@@ -130,7 +130,7 @@ export class PolymerProject {
   private _writeServiceWorker(bundle: boolean) {
     return polymerBuild.addServiceWorker({
       project: this._project,
-      buildRoot: config.build.unbundledDir,
+      buildRoot: config.build.distDir,
       swPrecacheConfig: config.swPrecacheConfig,
       path: config.serviceWorkerPath,
       bundled: bundle

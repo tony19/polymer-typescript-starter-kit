@@ -40,7 +40,8 @@ function stylesTask() {
     gulp.dest(config.build.debugDir),
   ]);
 
-  stream.pipe(gulp.dest(config.build.unbundledDir));
+  // TODO: Minify if env===production
+  stream.pipe(gulp.dest(config.build.distDir));
   return stream;
 }
 

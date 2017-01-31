@@ -36,15 +36,12 @@ const imagesTask = function images() {
   const stream = pump([
     gulp.src('images/**/*.{png,gif,jpg,svg}'),
     $.debug({title: 'images'}),
-    $.imagemin(),
-  ]);
 
-  if (config.build.bundledDir) {
-    stream.pipe(gulp.dest(config.build.bundledDir));
-  }
-  if (config.build.unbundledDir) {
-    stream.pipe(gulp.dest(config.build.unbundledDir));
-  }
+    // TODO: Minify only if env===production
+    $.imagemin(),
+
+    gulp.dest(config.build.distDir),
+  ]);
 
   return stream;
 };

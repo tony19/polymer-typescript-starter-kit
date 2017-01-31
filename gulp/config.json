@@ -1,10 +1,8 @@
 {
   "build": {
     "rootDir": "build",
-    "bundledDir": "",
-    "unbundledDir": "build/unbundled",
-    "debugDir": "build/debug",
-    "bundleType": "unbundled"
+    "distDir": "build/dist",
+    "debugDir": "build/debug"
   },
   "serviceWorkerPath": "service-worker.js",
   "swPrecacheConfig": {
