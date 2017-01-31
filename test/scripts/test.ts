@@ -1,3 +1,4 @@
+/// <reference path="../../node_modules/@types/mocha/index.d.ts" />
 import * as sinon from 'sinon';
 import * as chai from 'chai';
 import * as sinonChai from 'sinon-chai';
