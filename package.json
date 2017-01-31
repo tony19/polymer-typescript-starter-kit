@@ -22,6 +22,7 @@
   "devDependencies": {
     "@types/browser-sync": "3001.0.28-alpha",
     "@types/chai": "^3.4.34",
+    "@types/del": "^2.2.32",
     "@types/es6-shim": "^0.31.32",
     "@types/gulp": "^3.8.32",
     "@types/gulp-load-plugins": "^0.0.28",
