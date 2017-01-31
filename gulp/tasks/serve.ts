@@ -43,9 +43,11 @@ function serve() {
   const {projectRoot} = require(path.join(process.cwd(), 'polymer.json'));
 
   const options: browserSync.Options = {
+    ghostMode: false,
     logPrefix: 'PSK',
     minify: false,
     notify: true,
+    online: false,
     port: port,
     snippetOptions: {
       rule: {
