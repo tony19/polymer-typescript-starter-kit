@@ -7,9 +7,7 @@
 *Features*
 
  * Inline TypeScript transpilation (via `<script type="text/x-typescript>`)
- * [PolymerTS](https://github.com/nippur72/PolymerTS)
- * Inline Sass transpilation (via `<style>`)
- * Live reload on development server
+ * [PolymerTS](https://github.com/nippur72/PolymerTS) support
 
 With inline TypeScript transpilation and PolymerTS, you could define elements like [this](https://github.com/tony19/polymer-typescript-starter-kit/blob/7093acd/src/components/my-view3/my-view3.html#L31-L38):
 
