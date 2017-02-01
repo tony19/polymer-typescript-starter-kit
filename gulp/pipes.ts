@@ -69,7 +69,7 @@ export function uglifyPipe() {
   return task;
 }
 
-export const dartSassPipe: Transform = through2.obj((file, _enc, cb) => {
+export const dartSassPipe = (): Transform => through2.obj((file, _enc, cb) => {
   dartSass.render({file: file.path}, (err: Error, result: Buffer) => {
     if (!err) {
       file.contents = result.buffer;

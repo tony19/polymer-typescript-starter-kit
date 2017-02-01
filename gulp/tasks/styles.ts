@@ -37,7 +37,7 @@ function stylesTask() {
   const stream = pump([
     gulp.src('{src,test}/**/*.{css,sass,scss}'),
     $.debug({title: 'styles'}),
-    dartSassPipe,
+    dartSassPipe(),
     $.extReplace('.css'),
     gulp.dest(config.build.debugDir),
   ]);
