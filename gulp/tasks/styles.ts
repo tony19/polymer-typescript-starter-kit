@@ -26,6 +26,7 @@
  */
 import * as gulp from 'gulp';
 import * as loadPlugins from 'gulp-load-plugins';
+import {dartSassPipe} from '../pipes';
 const config = require('../config.json');
 const pump = require('pump');
 
@@ -36,7 +37,8 @@ function stylesTask() {
   const stream = pump([
     gulp.src('{src,test}/**/*.{css,sass,scss}'),
     $.debug({title: 'styles'}),
-    $.sass().on('error', $.sass.logError),
+    dartSassPipe,
+    $.extReplace('.css'),
     gulp.dest(config.build.debugDir),
   ]);
 
@@ -46,4 +48,4 @@ function stylesTask() {
 }
 
 (<any>stylesTask).description = 'Builds the CSS/SCSS files';
-gulp.task('styles', ['csslint'], stylesTask);
+gulp.task('styles', stylesTask);

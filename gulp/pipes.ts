@@ -24,7 +24,11 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+import * as chalk from 'chalk';
 import * as loadPlugins from 'gulp-load-plugins';
+import * as through2 from 'through2';
+import {Transform} from 'stream';
+const dartSass = require('dart-sass');
 const lazypipe = require('lazypipe');
 
 const $: any = loadPlugins();
@@ -64,6 +68,17 @@ export function uglifyPipe() {
   });
   return task;
 }
+
+export const dartSassPipe: Transform = through2.obj((file, _enc, cb) => {
+  dartSass.render({file: file.path}, (err: Error, result: Buffer) => {
+    if (!err) {
+      file.contents = result.buffer;
+    } else {
+      console.error(chalk.red('[dart-sass] ') + err.message);
+    }
+    cb(err, file);
+  });
+});
 
 /* The following pipes are arrays because they're passed to pump. */
 
