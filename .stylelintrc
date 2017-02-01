@@ -4,6 +4,7 @@
     "color-hex-length": null,
     "no-empty-source": null,
     "no-missing-end-of-source-newline": null,
+    "rule-non-nested-empty-line-before": null,
     "selector-type-no-unknown": null
   }
 }

@@ -25,13 +25,17 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 import * as chalk from 'chalk';
+import * as fs from 'fs';
 import * as loadPlugins from 'gulp-load-plugins';
 import * as through2 from 'through2';
+import * as tmp from 'tmp';
 import {Transform} from 'stream';
 const dartSass = require('dart-sass');
 const lazypipe = require('lazypipe');
 
 const $: any = loadPlugins();
+
+tmp.setGracefulCleanup();
 
 export function tsLazyPipe() {
   const tsProject = $.typescript.createProject('tsconfig.json');
@@ -69,14 +73,30 @@ export function uglifyPipe() {
   return task;
 }
 
-export const dartSassPipe = (): Transform => through2.obj((file, _enc, cb) => {
-  dartSass.render({file: file.path}, (err: Error, result: Buffer) => {
+function _renderSass(path: string, file: any, cb: Function) {
+  dartSass.render({file: path}, (err: Error, result: Buffer) => {
     if (!err) {
       file.contents = result.buffer;
     } else {
       console.error(chalk.red('[dart-sass] ') + err.message);
     }
     cb(err, file);
+  });
+}
+
+export const dartSassPipe = (): Transform => through2.obj((file, _enc, cb) => {
+  _renderSass(file.path, file, cb);
+});
+
+export const dartSassInlinePipe = (): Transform => through2.obj((file, _enc, cb) => {
+  // dart-sass currently can only read from disk, so filter
+  // the stream contents to a temporary file before feeding.
+  tmp.file((err, path, fd) => {
+    if (err) throw err;
+
+    fs.write(fd, file.contents, () => {
+      _renderSass(path, file, cb);
+    });
   });
 });
 
@@ -87,13 +107,12 @@ export const htmlPipe = () => [
   // since the script body gets transpiled into JavaScript
   $.if('**/*.html', $.replace(/(<script.*type=["'].*\/)x-typescript/, '$1javascript')),
 
-  // TODO: dart-sass doesn't accept buffers/strings, so for now,
-  // we can't transpile inline Sass. We could write the string
-  // into a temporary file and pass that to dart-sass. For now,
-  // just lint.
+  $.if('**/*.css', dartSassInlinePipe()),
+
   $.if('**/*.css', $.stylelint({
     configOverrides: {
       rules: {
+        'declaration-empty-line-before': null,
         indentation: null,
       }
     },
