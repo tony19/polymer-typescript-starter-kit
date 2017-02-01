@@ -87,7 +87,20 @@ export const htmlPipe = () => [
   // since the script body gets transpiled into JavaScript
   $.if('**/*.html', $.replace(/(<script.*type=["'].*\/)x-typescript/, '$1javascript')),
 
-  $.if('**/*.css', $.sass().on('error', $.sass.logError)),
+  // TODO: dart-sass doesn't accept buffers/strings, so for now,
+  // we can't transpile inline Sass. We could write the string
+  // into a temporary file and pass that to dart-sass. For now,
+  // just lint.
+  $.if('**/*.css', $.stylelint({
+    configOverrides: {
+      rules: {
+        indentation: null,
+      }
+    },
+    reporters: [
+      {formatter: 'string', console: true}
+    ]
+  })),
   $.if('**/*.ts', tsLazyPipe()()),
   $.if('**/*.js', $.babel()),
 ];

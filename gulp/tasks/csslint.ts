@@ -34,9 +34,11 @@ function csslintTask() {
   return pump([
     gulp.src('{src,test}/**/*.{css,sass,scss}'),
     $.debug({title: 'csslint'}),
-    $.sassLint(),
-    $.sassLint.format(),
-    $.sassLint.failOnError(),
+    $.stylelint({
+      reporters: [
+        {formatter: 'string', console: true}
+      ]
+    }),
   ]);
 }
 

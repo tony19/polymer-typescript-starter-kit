@@ -1,0 +1,9 @@
+{
+  "extends": "stylelint-config-standard",
+  "rules": {
+    "color-hex-length": null,
+    "no-empty-source": null,
+    "no-missing-end-of-source-newline": null,
+    "selector-type-no-unknown": null
+  }
+}

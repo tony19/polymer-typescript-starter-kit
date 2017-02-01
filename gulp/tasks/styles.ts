@@ -48,4 +48,4 @@ function stylesTask() {
 }
 
 (<any>stylesTask).description = 'Builds the CSS/SCSS files';
-gulp.task('styles', stylesTask);
+gulp.task('styles', ['csslint'], stylesTask);
