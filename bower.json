@@ -18,7 +18,12 @@
     "polymer": "Polymer/polymer#^1.6.0"
   },
   "devDependencies": {
-    "web-component-tester": "^4.0.0",
+    "web-component-tester": "v6.0.0-prerelease.5",
     "polymer-ts": "^0.1.28"
+  },
+  "resolutions": {
+    "mocha": "^3.1.2",
+    "test-fixture": "^2.0.0",
+    "web-component-tester": "v6.0.0-prerelease.5"
   }
 }
