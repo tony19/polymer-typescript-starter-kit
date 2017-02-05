@@ -16,6 +16,7 @@
     "systemjs.config.js",
     "bower_components/polymer-ts/polymer-ts.{min.html,min.js,,min.js.map,ts}",
     "bower_components/webcomponentsjs/webcomponents-lite.min.js",
+    "node_modules/rxjs/Rx.js",
     "node_modules/systemjs/dist/system.js"
   ]
 }
