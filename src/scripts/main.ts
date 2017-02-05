@@ -24,8 +24,15 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+import * as Rx from '../../node_modules/rxjs/Rx';
 
 export class App {
+
+  static test() {
+    const res = Rx.Observable.of(1, 2, 3).map((x: Number) => x + '!!!');
+    res.subscribe((x: String) => console.log('val', x));
+  }
+
   log(logger: (level: string, msg: string) => void, msg: string, debug: boolean) {
     if (debug) {
       logger('DEBUG', msg);

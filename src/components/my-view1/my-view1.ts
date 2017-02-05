@@ -24,9 +24,16 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+import {App} from '../../scripts/main';
+
 @component('my-view1')
 class MyView1 extends polymer.Base {
   @property()
   title = 'View One';
+
+  constructor() {
+    super();
+    App.test();
+  }
 }
 MyView1.register();

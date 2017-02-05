@@ -76,6 +76,7 @@
     "polymer-cli": "^0.17.0",
     "pump": "^1.0.2",
     "run-sequence": "^1.2.2",
+    "rxjs": "^5.1.0",
     "sinon": "^1.17.7",
     "sinon-chai": "^2.8.0",
     "stylelint-config-standard": "^15.0.1",
